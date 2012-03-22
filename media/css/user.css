@@ -1,0 +1,213 @@
+#header-sub-page
+{
+  background:url('../images/header_bg.jpg') repeat-x 0 bottom scroll;
+  height:71px;
+}
+
+#user .center-wrap
+{
+  min-width:932px;
+  max-width:1200px;
+}
+#user .hs-tab-ul li a span:first-child
+{
+  margin: 0 2px 0 6px;
+}
+#user .hs-tab-ul li, #catalog .hs-tab-ul li span, #catalog .hs-tab-ul li a
+{
+  font-size:107%;
+}
+#user .hs-tab-scroll .hs-tab-scroll-item
+{
+  width:96%;
+  text-align:center;
+  padding:15px 2%;
+}
+#user .hs-tab-scroll .hs-tab-scroll-item h1 span
+{
+  display:inline-block;
+  vertical-align:middle;
+  margin-left:5px;
+  position:relative;
+  left:-50px;
+  font-weight:200;
+  font-size:175%;
+}
+#user p.primary
+{
+  font-size:120%;
+  position:relative;
+  left:-30px;
+}
+#user p.secondary
+{
+  font-size:110%;
+  color:#7e7e7e;
+  position:relative;
+  left:-30px;
+}
+#user .tertiary
+{
+  margin-top:15px;
+}
+#filter_catalog-fieldset
+{
+  width:25%;
+  font-size:90%;
+}
+#catalog-search-sbt
+{
+  padding: 1px 2px 5px;
+  position: relative;
+  top: 2px;
+  width: 4%;
+  left:6px;
+}
+#filter_manufacturer-fieldset
+{
+  width:40%;
+  margin-left:2%;
+  margin-right:2%;
+}
+#filter_manufacturer
+{
+  width:100%;
+}
+#price-break-container
+{
+  font-size:140%;
+  width:24%;
+  text-align:right;
+  float:right;
+}
+#price-break-count
+{
+  width:13%;
+  font-weight:bold;
+  font-size:130%;
+  color:#FF0000;
+}
+#price-break-msg
+{
+  max-width:9em;
+  width:80%;
+}
+#catalog-search-frm fieldset,#price-break-container,#price-break-count,#price-break-msg,#catalog-search-sbt
+{
+  display:inline-block;
+  vertical-align:middle;
+}
+#catalog-table
+{
+  width:100%;
+  margin-top:10px;
+  vertical-align:middle;
+}
+#catalog-table #table-asterix
+{
+  width:6em;
+}
+#catalog-table input
+{
+  text-align:center;
+  padding:2px 0;
+  max-width:3em;
+}
+#catalog-table fieldset
+{
+  margin:0;
+}
+#product-availability-message
+{
+  font-size:110%;
+  text-align:left;
+  margin-top:10px;
+  float:left;
+}
+#catalog-checkout
+{
+  width:20%;
+  margin-top:10px;
+  float:right;
+  clear:both;
+}
+
+/*--------faq--------*/
+#faq-dl
+{
+  text-align:left;
+  width:80%;
+  margin:10px auto 0;
+  font-size:120%;
+}
+#faq-dl dt
+{
+  margin:5px 0;
+}
+#faq-dl dd
+{
+  border:1px solid #C5D3E1;
+  padding:10px;
+  margin:5px 20px 10px;
+  color:#444;
+  display:none;
+}
+#faq-no-luck
+{
+  margin:20px 25%;
+}
+/*--------end faq--------*/
+/*--------about--------*/
+#about-wrap
+{
+  text-align:left;
+  margin:20px 10%;
+  line-height:1.5em;
+  font-size:110%;
+}
+#about-wrap img
+{
+  float:right;
+  padding:5px;
+  border:1px solid #CCC;
+  margin-left:10px;
+}
+#about-wrap a
+{
+  float:left;
+  width:200px;
+  margin:20px 0 20px 10px;
+}
+/*--------end about--------*/
+/*--------contact--------*/
+.contact-h2
+{
+  position:relative;
+  left:-30px;
+  margin:50px 0 8px;
+  font-weight:normal;
+  font-size:180%;
+}
+#contact-by-frm
+{
+  margin:10px 25%;
+}
+#contact-headers
+{
+  margin:0 15%;
+}
+#contact-by-sbt
+{
+  margin:20px 30%;
+  position:relative;
+  left:30px;
+}
+#contact-by-phone .phone-number, #contact-email-link
+{
+  font-size:130%;
+}
+#contact-by-phone
+{
+  line-height:1.8em;
+}
+/*--------end contact--------*/
