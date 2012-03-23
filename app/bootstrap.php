@@ -1,5 +1,61 @@
 <?php
+/**
+ * The directory in which application specific resources are located.
+ * The application directory must contain the bootstrap.php file.
+ */
+$application = 'app';
 
+/**
+ * The directory in which the Kohana resources are located. 
+ * The system directory must contain the classes/controller.php 
+ * and classes/model.php files.
+ */
+$system = 'system';
+
+/**
+ * Set the full path to the docroot
+ */
+define('DOCROOT', rtrim(realpath(dirname(__FILE__)), $application));
+
+/**
+ * Make the application relative to the docroot, for symlink'd index.php
+ */
+if ( is_dir(DOCROOT.$application))
+	$application = DOCROOT.$application;
+
+/**	
+ * Make the system relative to the docroot, for symlink'd index.php
+ */
+if ( is_dir(DOCROOT.$system))
+	$system = DOCROOT.$system;
+	
+/**
+ * Define the absolute path for app directory
+ */
+define('APPPATH', realpath($application).DIRECTORY_SEPARATOR);
+define('SYSPATH', realpath($system).DIRECTORY_SEPARATOR);
+
+/**
+ * Clean up the configuration vars
+ */
+unset($application);
+unset($system);
+
+/**
+ * Define the start time of the application, used for profiling.
+ */
+if ( ! defined('APP_START_TIME'))
+{
+	define('APP_START_TIME', microtime(TRUE));
+}
+
+/**
+ * Define the memory usage at the start of the application, used for profiling.
+ */
+if ( ! defined('APP_START_MEMORY'))
+{
+	define('APP_START_MEMORY', memory_get_usage());
+}
 /**
  * Set the default locale.
  *
@@ -7,26 +63,5 @@
  */
 setlocale(LC_ALL, 'en_US.utf-8');
 
-/**
- * Set environmental variable (to be unset at the end of this bootstrap file)
-*/
-$SITE_ENV = 'local';
 
-/**
- * Include init file that includes all necessary system files
-*/
-require SYSPATH.'init.php';
-
-
-/**
- * Set spl_autoload_register
-*/
-spl_autoload_register(array('AutoLoader', 'autoload'));
-
-/**
- * Register the request
-*/
-$request = new 
-
-unset($SITE_ENV);
 ?>
