@@ -1,7 +1,6 @@
 <?php
 /**
  * Index file for The Bland Framework.
- * 
  */
 
 // Bootstrap the application
