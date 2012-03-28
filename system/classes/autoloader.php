@@ -4,13 +4,14 @@ class AutoLoader{
 	public static function autoload($class) {
 		
 		// convert to path (replace underscores)
-		$file = str_replace('_', '/', strtolower($class));
-		
+		$file = preg_replace('/_/', '/', strtolower($class));
 		// first try in controllers
 		if(file_exists(APPPATH."classes/$file.php")) {
-			include(APPPATH."classes/$class.php");
+			include(APPPATH."classes/$file.php");
+		}elseif(file_exists(SYSPATH."classes/$file.php")) {
+			include(SYSPATH."classes/$file.php");
 		}
-
+		
 		// does the class requested actually exist now?
 		if (class_exists($class)) {
 			// yes, we're done

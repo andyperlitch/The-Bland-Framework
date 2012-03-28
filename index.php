@@ -5,11 +5,12 @@
  */
 
 // Bootstrap the application
-include 'app/bootstrap.php';
+require 'app/bootstrap.php';
 
-
-// Include init file that includes all necessary system files
-require SYSPATH.'init.php';
+/**
+ * Set spl_autoload_register
+*/
+spl_autoload_register(array('AutoLoader', 'autoload'));
 
 /**
  * Set environment variable.
@@ -24,27 +25,42 @@ $environment = 'local';
  *
  */
 try {
-	$app_registry = new ApplicationRegistry( $environment );
+	// App object
+	$appRegistry = new ApplicationRegistry( $environment , APPPATH.'config/routes.php');
+	// Request object
+	$reqRegistry = new RequestRegistry($_SERVER, $_GET, $_POST);
+	// Session object
+	$sesRegistry = new SessionRegistry();
+	
 } catch (RegistryException $e) {
 	
 	// TODO: create nice-looking server error page for this
-	die("Sorry, an error occurred");
 	Error::log("\$environment variable [$environment] not a valid key in /app/config/application.php file.",'index.php',__LINE__,'3');
+	die("Sorry, an error occurred");
+
 }
 
-
-
-/**
- * Set spl_autoload_register
-*/
-spl_autoload_register(array('AutoLoader', 'autoload'));
-
-
-
+// Clean up global
 unset($environment);
 
-// Request object
-$request = new Request($_SERVER);
-
-// 
-echo APPPATH;
+try {
+	
+	// Create new command resolver
+	$cmd_r = new CommandResolver($appRegistry->routes(), $reqRegistry->uri());
+	
+	// Add uri params to appregistry
+	$reqRegistry->acceptParams($cmd_r->getParams());
+	
+	// Create controller
+	$cName = $reqRegistry->param('controller');
+	$controller = new $cName($appRegistry, $reqRegistry, $sesRegistry);
+	
+	// execute controller
+	$controller->execute();
+	
+} catch (Exception $e) {
+	// 404 Error
+	// TODO: Make nice 404 Error page
+	// TODO: Log bad request
+	echo '404 Error from index';
+}

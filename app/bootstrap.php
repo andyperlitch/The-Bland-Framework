@@ -63,5 +63,9 @@ if ( ! defined('APP_START_MEMORY'))
  */
 setlocale(LC_ALL, 'en_US.utf-8');
 
+/**
+ * Include autoloader
+*/
+require SYSPATH.'classes/autoloader.php';
 
 ?>

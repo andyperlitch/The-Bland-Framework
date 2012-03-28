@@ -49,5 +49,20 @@ PROPER_NAME_OF_PROJECT SYSTEM ERROR, URGENT (3):
             break;
         }
     }
-	
+
+	public static function logExc(Exception $e , $file_caught , $line_caught , $priority = 2 ){
+
+        $message = '
+----------------------
+!! EXCEPTION !!
+----------------------
+Caught in ' . $file_caught . ', line ' . $line_caught . ' : 
+Message: ' . $e->getMessage() . '
+Thrown in: '.$e->getFile() .' on line '.$e->getLine().'
+Trace: '.print_r($e->getTrace(),true);
+        $message .= '
+----------------------';
+        error_log($message);
+        
+    }	
 }

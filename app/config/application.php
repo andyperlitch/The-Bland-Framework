@@ -14,7 +14,10 @@ return array(
 		'pdo' => array(
 			'dsn'      => 'mysql:dbname=local_HSS;host=localhost',
 			'username' => 'root',
-			'password' => 'root'
+			'password' => 'root',
+			'options'  => array(
+				
+			),
 		),
 		
 	),
@@ -24,7 +27,10 @@ return array(
 		'pdo' => array(
 			'dsn'      => 'mysql:dbname=local_HSS;host=localhost',
 			'username' => 'root',
-			'password' => 'root'
+			'password' => 'root',
+			'options'  => array(
+				
+			),
 		),
 		
 	),
@@ -34,7 +40,10 @@ return array(
 		'pdo' => array(
 			'dsn'      => 'mysql:dbname=local_HSS;host=localhost',
 			'username' => 'root',
-			'password' => 'root'
+			'password' => 'root',
+			'options'  => array(
+				
+			),
 		),
 		
 	),
