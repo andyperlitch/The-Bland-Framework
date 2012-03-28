@@ -18,11 +18,37 @@ class Factory_ControllerTest extends PHPUnit_Framework_TestCase {
 	public function testBuild()
 	{
 		$controller = $this->factory->build(
+				array(
+					'REQUEST_URI' => '/'
+				),
 				array(),
 				array(),
-				array()
+				'local'
 			);
 		$this->assertInstanceOf('Controller',$controller);
+	}
+	
+	public function testBuild_badRequest()
+	{
+		$controller = $this->factory->build(
+				array(
+					'REQUEST_URI' => '/spaghettimonstrerrrrsrsssssasrlkaslkrjalskdjralsdkrjalsdkr'
+				),
+				array(),
+				array(),
+				'local'
+			);
+			
+		$controller2 = $this->factory->build(
+				array(
+					'REQUEST_URI' => '/asdfkajsdf/J*(#)#(?#J#IU#I)J?@J#?###?#/'
+				),
+				array(),
+				array(),
+				'local'
+			);
+		$this->assertInstanceOf('Controller_Error',$controller);
+		$this->assertInstanceOf('Controller_Error',$controller2);
 	}
 	
 }

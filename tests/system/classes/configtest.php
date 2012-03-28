@@ -20,9 +20,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase {
 	public function testGet()
 	{
 		foreach ($this->configs as $config) {
-			
-			$this->assertTrue( preg_match('/mysql:dbname=[\w]+;host=[\w]+/',$config->get('pdo_dsn')) , "array key 'pdo_dsn' not found" );
-			
+			$this->assertTrue( !!preg_match('/mysql:dbname=[\w]+;host=[\w]+/',$config->get('pdo_dsn')) , "array key 'pdo_dsn' not found" );
 		}
 	}
 	

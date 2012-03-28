@@ -1,43 +1,93 @@
 <?php defined('APPPATH') or die('No direct script access.');
-abstract class Controller {
+
+/**
+ * Exception class for controllers.
+ *
+ * @package Controller
+ * @author Andrew Perlitch
+ */
+class ControllerException extends Exception{}
+
+/**
+ * Interface for controller classes.
+ *
+ * @package Controller
+ * @author Andrew Perlitch
+ */
+abstract class Controller{
 	
-	protected $app;
+	/**
+	 * Config object
+	 *
+	 * @var Config
+	 */
+	protected $config;
+	
+	/**
+	 * Request object
+	 *
+	 * @var Request
+	 */
 	protected $request;
+	
+	/**
+	 * Session object
+	 *
+	 * @var Session
+	 */
 	protected $session;
 	
-	function __construct(ApplicationRegistry $app, RequestRegistry $req, SessionRegistry $ses)
+	/**
+	 * Action to execute 
+	 *
+	 * @var Session
+	 */
+	protected $action;
+	
+	/**
+	 * Constructor.
+	 *
+	 * @param Config $c 
+	 * @param Request $r 
+	 * @param Session $s 
+	 * @param string $action 
+	 * @author Andrew Perlitch
+	 */
+	function __construct(Config $c, Request $r, Session $s, $action )
 	{
-		$this->app = $app;
-		$this->request = $req;
-		$this->session = $ses;
+		$this->config = $c;
+		$this->request = $r;
+		$this->session = $s;
+		$this->action = $action; // string of name of function to execute
 	}
 	
-	public function before()
+	/**
+	 * function to execute before chosen action of request
+	 *
+	 * @return void
+	 * @author Andrew Perlitch
+	 */
+	protected function before() 
 	{
 		
 	}
 	
-	public function after()
+	/**
+	 * function to execute after chosen action of request
+	 *
+	 * @return void
+	 * @author Andrew Perlitch
+	 */
+	protected function after()
 	{
 		
 	}
 	
-	final public function execute()
+	public function execute()
 	{
-		// grab action name
-		$action = $this->request->param('action');
-		
-		// check if chosen action exists
-		if ( ! method_exists($this, $action) ) {
-			// TODO: Write 404 error page
-			echo '404 Error Page';
-			exit();
-		}
-		
-		// do stuff
+		$method_to_execute = $this->action; // only doing this because im not sure if $this->$this->action() would work
 		$this->before();
-		$this->$action();
+		$this->$method_to_execute();
 		$this->after();
 	}
-	
 }

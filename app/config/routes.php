@@ -17,6 +17,6 @@ return array(
 	array(
 		'pattern' => '/^(?:\/)([-\w]*)(?:(?:\/)([-\w]+))?(?:(?:\/)([-\w]+))?/',
 		'keys'    => array('controller','action','id'),
-		'defaults' => array('controller' => 'controller_home', 'action' => 'index'),
+		'defaults' => array('controller' => 'home', 'action' => 'index'),
 	)
 );

@@ -29,7 +29,6 @@ require_once('system/classes/configtest.php');
 require_once('system/classes/requesttest.php');
 require_once('system/classes/sessiontest.php');
 require_once('system/classes/autoloadertest.php');
-require_once('system/classes/commandresolvertest.php');
 require_once('system/classes/factory/controllertest.php');
 
 
@@ -44,10 +43,9 @@ class AppTests{
 		
 		// <----- **** ADD OTHER TEST SUITE NAMES HERE ****
 		$ts->addTestSuite('ConfigTest');
-		$ts->addTestSuite('RequestRegistryTest');
-		$ts->addTestSuite('SessionRegistryTest');
+		$ts->addTestSuite('RequestTest');
+		$ts->addTestSuite('SessionTest');
 		$ts->addTestSuite('AutoLoaderTest');
-		$ts->addTestSuite('CommandResolverTest');
 		$ts->addTestSuite('Factory_ControllerTest');
 		
 		
