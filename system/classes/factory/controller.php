@@ -33,8 +33,10 @@ class Factory_Controller{
 		
 		try {
 			// Returns correct child object of Controller.
-			return new $params['controller']($c, $r, $s, $params['action']);
-		} catch (AutoloadException $e) {
+			$class = new $params['controller']($c, $r, $s, $params['action']);
+			if( !method_exists($params['controller'],$params['action'])) throw new Exception("Action '{$params['action']}' not found in controller");
+			return $class;
+		} catch (Exception $e) {
 			// Return 404 page
 			return new Controller_Error($c, $r, $s, 'action_404');
 		}

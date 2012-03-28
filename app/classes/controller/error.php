@@ -10,7 +10,7 @@ class Controller_Error extends Controller {
 
 	public function action_404()
 	{
-		echo '404 Error: Page not found';
+		echo "404 Error: Page '{$this->request->uri()}' not found";
 		// TODO: make nice 404 error page
 	}
 	
