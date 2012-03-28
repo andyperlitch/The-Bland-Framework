@@ -1,7 +1,7 @@
 <?php 
 require_once PHPUNIT_PATH.'Framework/TestCase.php';
-include SYSPATH.'classes/requestregistry.php';
-class RequestRegistryTest extends PHPUnit_Framework_TestCase {
+include SYSPATH.'classes/request.php';
+class RequestTest extends PHPUnit_Framework_TestCase {
 	
 	private $ajaxPostRequest;
 	private $ajaxGetRequest;
@@ -13,7 +13,7 @@ class RequestRegistryTest extends PHPUnit_Framework_TestCase {
 	{
 		
 		
-		$this->allRequests[] = $this->ajaxPostRequest = new RequestRegistry(
+		$this->allRequests[] = $this->ajaxPostRequest = new Request(
 			// server
 			array(
 				// user agent
@@ -41,7 +41,7 @@ class RequestRegistryTest extends PHPUnit_Framework_TestCase {
 				'post_var_4' => 'post_var_4_value',
 			)
 		);
-		$this->allRequests[] = $this->ajaxGetRequest = new RequestRegistry(
+		$this->allRequests[] = $this->ajaxGetRequest = new Request(
 			// server
 			array(
 				// user agent
@@ -69,7 +69,7 @@ class RequestRegistryTest extends PHPUnit_Framework_TestCase {
 				
 			)
 		);
-		$this->allRequests[] = $this->postRequest = new RequestRegistry(
+		$this->allRequests[] = $this->postRequest = new Request(
 			// server
 			array(
 				// user agent
@@ -97,7 +97,7 @@ class RequestRegistryTest extends PHPUnit_Framework_TestCase {
 				'post_var_4' => 'post_var_4_value',
 			)
 		);
-		$this->getRequest = new RequestRegistry(
+		$this->getRequest = new Request(
 			// server
 			array(
 				// user agent
@@ -134,16 +134,6 @@ class RequestRegistryTest extends PHPUnit_Framework_TestCase {
 		$this->allRequests = array();
 	}
 	
-	public function testBadConstructServerArg()
-	{
-		try {
-			$bad = new RequestRegistry( array(), array(), array() );
-		} catch (RegistryException $e) {
-			return;
-		}
-		$this->fail("RequestException expected.");
-	}
-	
 	public function testIsAjax()
 	{
 		$this->assertTrue( $this->ajaxPostRequest->isAjax(), "Should be an ajax request.");
@@ -174,7 +164,7 @@ class RequestRegistryTest extends PHPUnit_Framework_TestCase {
 	{
 		try {
 			$bad = $this->getRequest->get('spaghetti');
-		} catch (RegistryException $e) {
+		} catch (RequestException $e) {
 			return;
 		}
 		$this->fail("RequestException expected.");
@@ -194,7 +184,7 @@ class RequestRegistryTest extends PHPUnit_Framework_TestCase {
 	{
 		try {
 			$bad = $this->postRequest->post('spaghetti');
-		} catch (RegistryException $e) {
+		} catch (RequestException $e) {
 			return;
 		}
 		$this->fail("RequestException expected. [$bad] returned");

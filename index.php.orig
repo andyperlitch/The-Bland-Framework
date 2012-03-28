@@ -1,4 +1,10 @@
 <?php
+<<<<<<< HEAD
+/**
+ * Index file for The Bland Framework.
+ */
+=======
+>>>>>>> di-refactor
 
 // Bootstrap the application
 require 'app/bootstrap.php';

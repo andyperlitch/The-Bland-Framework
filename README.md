@@ -10,6 +10,7 @@ I am not a PHP ninja. Pull at your own (extremely high) risk.
 	* single responsibility principle for classes
 2. **High Testability**
 	* test suites for every class
+	* avoid instantiation outside of factory classes
 	* use PHPUnit for Test-driven Development
 		* default phpunit cmd: `/Applications/MAMP/bin/php5.3/bin/php ~/Sites/BlandFramework/The-Bland-Framework/tests/AppTests.php`
 3. **Well-Documented**

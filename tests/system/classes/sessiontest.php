@@ -1,13 +1,13 @@
 <?php 
 require_once PHPUNIT_PATH.'Framework/TestCase.php';
-include SYSPATH.'classes/sessionregistry.php';
-class SessionRegistryTest extends PHPUnit_Framework_TestCase {
+include SYSPATH.'classes/session.php';
+class SessionTest extends PHPUnit_Framework_TestCase {
 	
 	private $session;
 	
 	public function setUp()
 	{
-		$this->session = new SessionRegistry();
+		$this->session = new Session();
 	}
 	
 	public function tearDown()

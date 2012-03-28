@@ -1,66 +1,45 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class CommandResolverException extends Exception{}
-
 /**
- * Uses routes and URI to determine request parameters and create controller.
+ * Builds controller object for given server and request info.
  *
- * @package default
+ * @package Controller
  * @author Andrew Perlitch
  */
-class CommandResolver {
-	
-	/**
-	 * Command params extracted from uri with routes.
-	 *
-	 * @var string
-	 */
-	protected $params;
-	
-	/**
-	 * Interprets URI from $req and routes from $app to create correct Controller obj.
-	 * Loops through routes until it finds a match for given uri.
-	 *
-	 * @param RequestRegistry $req 
-	 * @param SessionRegistry $ses 
-	 * @param ApplicationRegistry $app 
-	 * @author Andrew Perlitch
-	 */
-	function __construct( array $routes, $uri)
-	{
-		// Check that uri is a string
-		if ( ! is_string($uri) ) throw new CommandResolverException("Expecting a string for \$uri. Given type: ".gettype($uri));
-		
-		// Get command params
-		$this->params = $this->_setParams($routes, $uri);
-		
-	}
+class Factory_Controller{
 	
 	/**
 	 * Returns controller object.
-	 * Based on URI and routes given in self::__construct
-	 * 
-	 * @return Controller
-	 * @author Andrew Perlitch
-	 */
-	public function getParams()
-	{
-		return $this->params;
-	}
-	
-	
-	/**
-	 * Returns formatted controller name.
-	 * Prepends 'Controller_' and capitalizes letters after underscores.
+	 * Request object requires $_SERVER, $_GET, and $_POST arrays.
 	 *
-	 * @param string $controller 
-	 * @return string
+	 * @param array $server 
+	 * @param array $get 
+	 * @param array $post 
+	 * @return void
 	 * @author Andrew Perlitch
 	 */
-	protected function _getControllerClassName($controller)
+	public function build(array $server, array $get, array $post, $environment)
 	{
-		// Add 'Controller_' prefix, make uppercase letters
-		return 'Controller_'.ucfirst( preg_replace( '/(_([a-z]{1}))/e' , "strtoupper('\\1')" , $controller  ) );
+		// instantiate new config, request, and session objects for controller.
+		$c = new Config($environment);
+		$r = new Request($server, $get, $post);
+		$s = new Session();
+		
+		// Reads config file with route info
+		$routes = include(APPPATH.'config/routes.php');
+		
+		// Get request params (must include action key and controller key)
+		$params = $this->_getRequestParams($routes, $r->uri());
+		
+		try {
+			// Returns correct child object of Controller.
+			$class = new $params['controller']($c, $r, $s, $params['action']);
+			if( !method_exists($params['controller'],$params['action'])) throw new Exception("Action '{$params['action']}' not found in controller");
+			return $class;
+		} catch (Exception $e) {
+			// Return 404 page
+			return new Controller_Error($c, $r, $s, 'action_404');
+		}
 	}
 	
 	/**
@@ -71,7 +50,7 @@ class CommandResolver {
 	 * @return array
 	 * @author Andrew Perlitch
 	 */
-	protected function _setParams($routes,$uri)
+	protected function _getRequestParams($routes,$uri)
 	{
 		// Keep string for failure reasons
 		$reasons = '';
@@ -81,7 +60,7 @@ class CommandResolver {
 						
 			// Create the regex params array
 			if( ! preg_match( $route['pattern'], $uri, $matches) ) {
-				$reasons .= "no match";
+				$reasons .= "'{$route['pattern']}': No match, ";
 				continue;
 			}
 			
@@ -90,7 +69,7 @@ class CommandResolver {
 			
 			// Check that matches count is the same as keys
 			if (count($route['keys']) < count($matches) ) {
-				$reasons .= "not enough keys provided for matches, ";
+				$reasons .= "'{$route['patter']}': Not enough keys provided for matches, ";
 				continue;
 			}
 			
@@ -121,7 +100,13 @@ class CommandResolver {
 		}
 		
 		// No routes found
-		throw new CommandResolverException("No route found for \$uri:'$uri'. Reasons: ".rtrim($reasons,', '));
+		throw new FactoryException("No route found for \$uri:'$uri'. Reasons: ".rtrim($reasons,', '));
 		
+	}
+	
+	protected function _getControllerClassName($controller)
+	{
+		// Add 'Controller_' prefix, make uppercase letters
+		return 'Controller_'.ucfirst( preg_replace( '/(_([a-z]{1}))/e' , "strtoupper('\\1')" , $controller  ) );
 	}
 }

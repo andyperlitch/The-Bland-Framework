@@ -11,41 +11,32 @@ return array(
 
 	'local' => array(
 		
-		'pdo' => array(
-			'dsn'      => 'mysql:dbname=local_HSS;host=localhost',
-			'username' => 'root',
-			'password' => 'root',
-			'options'  => array(
-				
-			),
+		'pdo_dsn'      => 'mysql:dbname=local_HSS;host=localhost',
+		'pdo_user' => 'root',
+		'pdo_pass' => 'root',
+		'pdo_options'  => array(
+			
 		),
-		
 	),
 	
 	'server_testing' => array(
 		
-		'pdo' => array(
-			'dsn'      => 'mysql:dbname=local_HSS;host=localhost',
-			'username' => 'root',
-			'password' => 'root',
-			'options'  => array(
-				
-			),
+		'pdo_dsn'      => 'mysql:dbname=local_HSS;host=localhost',
+		'pdo_user' => 'root',
+		'pdo_pass' => 'root',
+		'pdo_options'  => array(
+			
 		),
-		
 	),
 	
 	'production' => array(
 		
-		'pdo' => array(
-			'dsn'      => 'mysql:dbname=local_HSS;host=localhost',
-			'username' => 'root',
-			'password' => 'root',
-			'options'  => array(
-				
-			),
+		'pdo_dsn'      => 'mysql:dbname=local_HSS;host=localhost',
+		'pdo_user' => 'root',
+		'pdo_pass' => 'root',
+		'pdo_options'  => array(
+			
 		),
-		
 	),
 	
 //	'example' => array(

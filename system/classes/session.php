@@ -1,12 +1,21 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 /**
- * Registry for session information.
+ * Exception class for sessions.
  *
- * @package default
+ * @package Session
  * @author Andrew Perlitch
  */
-class SessionRegistry extends Registry {
+class SessionException extends Exception{}
+
+/**
+ * Session object.
+ * Holds info on session
+ *
+ * @package Session
+ * @author Andrew Perlitch
+ */
+class Session {
 	
 	function __construct()
 	{

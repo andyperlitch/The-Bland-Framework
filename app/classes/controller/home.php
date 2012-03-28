@@ -10,7 +10,12 @@ class Controller_Home extends Controller {
 
 	public function action_index()
 	{
-		echo 'test';
+		echo 'Hello World!';
+	}
+	
+	public function action_test()
+	{
+		echo 'testing another action';
 	}
 	
 }

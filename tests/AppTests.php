@@ -25,11 +25,11 @@ require_once(PHPUNIT_PATH.'Framework/TestSuite.php');
 require_once(PHPUNIT_PATH.'TextUI/TestRunner.php');
 
 // <----- **** INCLUDE OTHER TEST SUITES HERE ****
-require_once('system/classes/applicationtest.php');
+require_once('system/classes/configtest.php');
 require_once('system/classes/requesttest.php');
 require_once('system/classes/sessiontest.php');
 require_once('system/classes/autoloadertest.php');
-require_once('system/classes/commandresolvertest.php');
+require_once('system/classes/factory/controllertest.php');
 
 
 class AppTests{
@@ -42,11 +42,12 @@ class AppTests{
 		$ts = new PHPUnit_Framework_TestSuite( 'Request Classes' );
 		
 		// <----- **** ADD OTHER TEST SUITE NAMES HERE ****
-		$ts->addTestSuite('ApplicationRegistryTest');
-		$ts->addTestSuite('RequestRegistryTest');
-		$ts->addTestSuite('SessionRegistryTest');
+		$ts->addTestSuite('ConfigTest');
+		$ts->addTestSuite('RequestTest');
+		$ts->addTestSuite('SessionTest');
 		$ts->addTestSuite('AutoLoaderTest');
-		$ts->addTestSuite('CommandResolverTest');
+		$ts->addTestSuite('Factory_ControllerTest');
+		
 		
 		return $ts;
 		
