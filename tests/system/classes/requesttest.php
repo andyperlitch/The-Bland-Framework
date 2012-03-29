@@ -210,4 +210,14 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 			$this->assertEquals('/controller/action/id', $request->uri());
 		}
 	}
+	public function testSetParams()
+	{
+		$params = array(
+			'foo' => 'bar'
+		);
+		foreach ($this->allRequests as $request) {
+			$request->setParams($params);
+			$this->assertEquals($params['foo'], $request->param('foo'));
+		}
+	}
 }

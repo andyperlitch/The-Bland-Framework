@@ -22,23 +22,28 @@ class Factory_Controller{
 	{
 		// instantiate new config, request, and session objects for controller.
 		$c = new Config($environment);
-		$r = new Request($server, $get, $post);
+		$req = new Request($server, $get, $post);
 		$s = new Session();
+		$res = new Response();
+		$fm = new Factory_Model();
 		
 		// Reads config file with route info
 		$routes = include(APPPATH.'config/routes.php');
 		
 		// Get request params (must include action key and controller key)
-		$params = $this->_getRequestParams($routes, $r->uri());
+		$params = $this->_getRequestParams($routes, $req->uri());
+		
+		// set request params in Request object
+		$req->setParams($params);
 		
 		try {
 			// Returns correct child object of Controller.
-			$class = new $params['controller']($c, $r, $s, $params['action']);
+			$class = new $params['controller']($c, $req, $s, $res, $fm, $params['action']);
 			if( !method_exists($params['controller'],$params['action'])) throw new Exception("Action '{$params['action']}' not found in controller");
 			return $class;
 		} catch (Exception $e) {
 			// Return 404 page
-			return new Controller_Error($c, $r, $s, 'action_404');
+			return new Controller_Error($c, $req, $s, $res, $fm, 'action_404');
 		}
 	}
 	

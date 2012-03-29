@@ -10,7 +10,7 @@ class Controller_Home extends Controller {
 
 	public function action_index()
 	{
-		echo 'Hello World!';
+		$this->response->body('hello world!');
 	}
 	
 	public function action_test()

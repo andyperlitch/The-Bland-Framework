@@ -30,6 +30,7 @@ require_once('system/classes/requesttest.php');
 require_once('system/classes/sessiontest.php');
 require_once('system/classes/autoloadertest.php');
 require_once('system/classes/factory/controllertest.php');
+require_once('system/classes/responsetest.php');
 
 
 class AppTests{
@@ -47,6 +48,7 @@ class AppTests{
 		$ts->addTestSuite('SessionTest');
 		$ts->addTestSuite('AutoLoaderTest');
 		$ts->addTestSuite('Factory_ControllerTest');
+		$ts->addTestSuite('ResponseTest');
 		
 		
 		return $ts;

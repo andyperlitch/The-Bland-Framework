@@ -38,11 +38,20 @@ abstract class Controller{
 	protected $session;
 	
 	/**
+	 * Response object
+	 *
+	 * @var string
+	 */
+	protected $response;
+	
+	/**
 	 * Action to execute 
 	 *
 	 * @var Session
 	 */
 	protected $action;
+	
+	
 	
 	/**
 	 * Constructor.
@@ -53,11 +62,12 @@ abstract class Controller{
 	 * @param string $action 
 	 * @author Andrew Perlitch
 	 */
-	function __construct(Config $c, Request $r, Session $s, $action )
+	function __construct(Config $c, Request $r, Session $s, Response $res, Factory_Model $fm, $action )
 	{
 		$this->config = $c;
 		$this->request = $r;
 		$this->session = $s;
+		$this->response = $res;
 		$this->action = $action; // string of name of function to execute
 	}
 	
@@ -85,9 +95,9 @@ abstract class Controller{
 	
 	public function execute()
 	{
-		$method_to_execute = $this->action; // only doing this because im not sure if $this->$this->action() would work
 		$this->before();
-		$this->$method_to_execute();
+		$this->{$this->action}();
 		$this->after();
+		$this->response->send();
 	}
 }

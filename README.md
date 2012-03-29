@@ -29,3 +29,5 @@ I am not a PHP ninja. Pull at your own (extremely high) risk.
 2. **Testing**
 	* adjust the include path for bootstrap.php file in AppTests.php
 	
+3. **Header Information**
+	1. change "Host" header to appropriate URL: system/classes/response.php, `Response::__construct`

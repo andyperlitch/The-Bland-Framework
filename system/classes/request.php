@@ -19,6 +19,7 @@ class Request {
 	protected $server;
 	protected $get;
 	protected $post;
+	protected $requestParams = array();
 	
 	/**
 	 * Asks for server, get, and post arrays.
@@ -118,5 +119,16 @@ class Request {
 	public function addr()
 	{
 		return $this->server['REMOTE_ADDR'];
+	}
+	
+	public function setParams(array $params)
+	{
+		$this->requestParams = $params;
+	}
+	
+	public function param($key=NULL)
+	{
+		if ( $key === NULL ) return $this->requestParams;
+		else return $this->requestParams[$key];
 	}
 }

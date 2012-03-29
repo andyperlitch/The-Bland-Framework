@@ -27,9 +27,6 @@ class Session {
 			
 			// Start the session
 			session_start();
-
-			// Set cache-control to private
-		    header("Cache-control: private");
 		}
 
 		// Set the user ID
