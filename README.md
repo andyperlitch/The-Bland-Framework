@@ -1,7 +1,7 @@
 # The Bland Framework: A light-weight PHP Framework
 * * *
 
-I am not a PHP ninja. Pull at your own (extremely high) risk.
+I am not a PHP ninja. Pull at your own risk.
 
 ## General Goals for the project:
 1. **Loose Coupling**
