@@ -29,8 +29,10 @@ require_once('system/classes/configtest.php');
 require_once('system/classes/requesttest.php');
 require_once('system/classes/sessiontest.php');
 require_once('system/classes/autoloadertest.php');
-require_once('system/classes/factory/controllertest.php');
 require_once('system/classes/responsetest.php');
+require_once('system/classes/factory/controllertest.php');
+require_once('system/classes/factory/viewtest.php');
+require_once('system/classes/factory/modeltest.php');
 
 
 class AppTests{
@@ -47,8 +49,10 @@ class AppTests{
 		$ts->addTestSuite('RequestTest');
 		$ts->addTestSuite('SessionTest');
 		$ts->addTestSuite('AutoLoaderTest');
-		$ts->addTestSuite('Factory_ControllerTest');
 		$ts->addTestSuite('ResponseTest');
+		$ts->addTestSuite('Factory_ControllerTest');
+		$ts->addTestSuite('Factory_ModelTest');
+		$ts->addTestSuite('Factory_ViewTest');
 		
 		
 		return $ts;

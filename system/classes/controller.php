@@ -40,14 +40,31 @@ abstract class Controller{
 	/**
 	 * Response object
 	 *
-	 * @var string
+	 * @var Response
 	 */
 	protected $response;
 	
 	/**
+	 * Factory_Model object.
+	 * Used for making model objects
+	 *
+	 * @var Factory_Model
+	 */
+	protected $fm;
+	
+	/**
+	 * Factory_View object.
+	 * Used for processing view files into string.
+	 * Also for adding variables to views.
+	 *
+	 * @var Factory_View
+	 */
+	protected $fv;
+	
+	/**
 	 * Action to execute 
 	 *
-	 * @var Session
+	 * @var String
 	 */
 	protected $action;
 	
@@ -62,12 +79,14 @@ abstract class Controller{
 	 * @param string $action 
 	 * @author Andrew Perlitch
 	 */
-	function __construct(Config $c, Request $r, Session $s, Response $res, Factory_Model $fm, $action )
+	function __construct(Config $c, Request $r, Session $s, Response $res, Factory_Model $fm, Factory_View $fv, $action )
 	{
 		$this->config = $c;
 		$this->request = $r;
 		$this->session = $s;
 		$this->response = $res;
+		$this->fm = $fm;
+		$this->fv = $fv;
 		$this->action = $action; // string of name of function to execute
 	}
 	

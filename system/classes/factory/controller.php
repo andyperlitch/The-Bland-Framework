@@ -3,7 +3,7 @@
 /**
  * Builds controller object for given server and request info.
  *
- * @package Controller
+ * @package Factory
  * @author Andrew Perlitch
  */
 class Factory_Controller{
@@ -26,6 +26,7 @@ class Factory_Controller{
 		$s = new Session();
 		$res = new Response();
 		$fm = new Factory_Model();
+		$fv = new Factory_View();
 		
 		// Reads config file with route info
 		$routes = include(APPPATH.'config/routes.php');
@@ -38,12 +39,12 @@ class Factory_Controller{
 		
 		try {
 			// Returns correct child object of Controller.
-			$class = new $params['controller']($c, $req, $s, $res, $fm, $params['action']);
+			$class = new $params['controller']($c, $req, $s, $res, $fm, $fv, $params['action']);
 			if( !method_exists($params['controller'],$params['action'])) throw new Exception("Action '{$params['action']}' not found in controller");
 			return $class;
 		} catch (Exception $e) {
 			// Return 404 page
-			return new Controller_Error($c, $req, $s, $res, $fm, 'action_404');
+			return new Controller_Error($c, $req, $s, $res, $fm, $fv, 'action_404');
 		}
 	}
 	
