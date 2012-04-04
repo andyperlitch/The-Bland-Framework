@@ -20,7 +20,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase {
 	public function testGet()
 	{
 		foreach ($this->configs as $config) {
-			$this->assertTrue( !!preg_match('/mysql:dbname=[\w]+;host=[\w]+/',$config->get('pdo_dsn')) , "array key 'pdo_dsn' not found" );
+			$this->assertTrue( !!preg_match('/mysql:dbname=[\w]+;host=[\w]+/',$config['pdo_dsn']) , "array key 'pdo_dsn' not found" );
 		}
 	}
 	
@@ -28,7 +28,19 @@ class ConfigTest extends PHPUnit_Framework_TestCase {
 	{
 		foreach ($this->configs as $config) {
 			try {
-				$config->get('Spaghettiosssss');
+				$config['Spaghettiosssss'];
+			} catch (ConfigException $e) {
+				return;
+			}
+			$this->fail("Expecting a ConfigException to be thrown");
+		}
+	}
+	
+	public function testSet()
+	{
+		foreach ($this->configs as $config) {
+			try {
+				$config['spaghettiiooooos'] = 'foobar';
 			} catch (ConfigException $e) {
 				return;
 			}

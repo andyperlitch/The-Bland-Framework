@@ -12,7 +12,7 @@ class Factory_View {
 	{
 		foreach ($vars as $key => $value) ${$key} = $value;
 		ob_start();
-		@include(APPPATH.'view/'.$file.'.php');
+		include(APPPATH.'view/'.$file.'.php');
 		$res = ob_get_contents();
 		ob_end_clean();
 		return $res;

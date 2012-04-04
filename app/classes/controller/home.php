@@ -6,16 +6,11 @@
  * @package Controller
  * @author Andrew Perlitch
  */
-class Controller_Home extends Controller {
+class Controller_Home extends Controller_Templates_Html5 {
 
 	public function action_index()
 	{
-		$this->response->body('hello world!');
-	}
-	
-	public function action_test()
-	{
-		echo 'testing another action';
+		$this->template['body'] = 'hello world!';
 	}
 	
 }

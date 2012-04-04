@@ -7,7 +7,7 @@ class Factory_ModelTest extends PHPUnit_Framework_TestCase {
 	
 	public function setUp()
 	{
-		$this->fm = new Factory_Model();
+		$this->fm = new Factory_Model(new Config('local'));
 	}
 	
 	public function tearDown()
@@ -17,7 +17,7 @@ class Factory_ModelTest extends PHPUnit_Framework_TestCase {
 	
 	public function testBuild()
 	{
-		$model = $this->fm->build('Model_Test');
+		$model = $this->fm->build('test');
 		$this->assertInstanceOf('Model',$model );
 	}
 	

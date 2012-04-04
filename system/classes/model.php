@@ -8,4 +8,11 @@
  */
 abstract class Model {
 	
+	protected $db;
+	
+	function __construct($db = NULL)
+	{
+		$this->db = $db;
+	}
+	
 }

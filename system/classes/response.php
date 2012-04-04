@@ -21,6 +21,7 @@ class Response{
 	function __construct()
 	{
 		$this->headers = array(
+			'HTTP/1.1 200 OK' => false,
 			'Content-Type'  => 'text/html; charset=utf-8',
 			'Cache-Control' => 'private',
 			'Host'          => 'www.example.com',
@@ -38,6 +39,29 @@ class Response{
 	public function body($content)
 	{
 		$this->body .= $content;
+	}
+
+	/**
+	 * Prepends to $this->body, which will be echoed in $this->send()
+	 *
+	 * @param string $content 
+	 * @return void
+	 * @author Andrew Perlitch
+	 */
+	public function bodyPrepend($content)
+	{
+		$this->body = $content . $this->body;
+	}
+	
+	/**
+	 * Clears $this->body of string.
+	 *
+	 * @return void
+	 * @author Andrew Perlitch
+	 */
+	public function bodyClear()
+	{
+		$this->body = '';
 	}
 	
 	/**

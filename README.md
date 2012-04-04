@@ -31,3 +31,6 @@ I am not a PHP ninja. Pull at your own risk.
 	
 3. **Header Information**
 	1. change "Host" header to appropriate URL: system/classes/response.php, `Response::__construct`
+	
+4. **Config**
+	1. in the `/app/config/application.php` config file, change 'domain' keys to match your environment

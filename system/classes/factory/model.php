@@ -6,11 +6,25 @@
  * @package Factory
  * @author Andrew Perlitch
  */
-class Factory_Model{
+class Factory_Model extends Factory{
 	
-	public function build($className)
+	protected $config;
+	
+	function __construct(Config $c)
 	{
-		return new $className();
+		$this->config = $c;
 	}
 	
+	public function build( $className, $args = array(), $database = true )
+	{
+		// compute class name
+		$className = $this->_getClassName($className, 'Model_');
+		
+		// set db object (or lack thereof)
+		if($database) $args[] = new DB($this->config);
+		
+		// Multiple parameters
+		$object = new ReflectionClass($className);
+		return $object->newInstanceArgs($args);
+	}
 }

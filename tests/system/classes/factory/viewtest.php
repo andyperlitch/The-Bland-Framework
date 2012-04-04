@@ -1,5 +1,6 @@
 <?php 
 require_once PHPUNIT_PATH.'Framework/TestCase.php';
+include_once SYSPATH.'classes/factory.php';
 include SYSPATH.'classes/factory/view.php';
 class Factory_ViewTest extends PHPUnit_Framework_TestCase {
 	

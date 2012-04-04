@@ -6,7 +6,7 @@
  * @package Factory
  * @author Andrew Perlitch
  */
-class Factory_Controller{
+class Factory_Controller extends Factory{
 	
 	/**
 	 * Returns controller object.
@@ -25,7 +25,7 @@ class Factory_Controller{
 		$req = new Request($server, $get, $post);
 		$s = new Session();
 		$res = new Response();
-		$fm = new Factory_Model();
+		$fm = new Factory_Model($c);
 		$fv = new Factory_View();
 		
 		// Reads config file with route info
@@ -100,7 +100,7 @@ class Factory_Controller{
 			}
 			
 			// All tests pass, change controller and action, then return $merged
-			$merged['controller'] = $this->_getControllerClassName($merged['controller']);
+			$merged['controller'] = $this->_getClassName($merged['controller']);
 			$merged['action'] = 'action_'.strtolower($merged['action']);
 			return $merged;
 		}
@@ -108,11 +108,5 @@ class Factory_Controller{
 		// No routes found
 		throw new FactoryException("No route found for \$uri:'$uri'. Reasons: ".rtrim($reasons,', '));
 		
-	}
-	
-	protected function _getControllerClassName($controller)
-	{
-		// Add 'Controller_' prefix, make uppercase letters
-		return 'Controller_'.ucfirst( preg_replace( '/(_([a-z]{1}))/e' , "strtoupper('\\1')" , $controller  ) );
 	}
 }

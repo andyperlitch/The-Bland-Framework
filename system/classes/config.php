@@ -16,14 +16,14 @@ class ConfigException extends Exception{}
  * @package Config
  * @author Andrew Perlitch
  */
-class Config {
+class Config implements arrayaccess{
 	
 	/**
 	 * Array that holds config info.
 	 *
 	 * @var array
 	 */
-	protected $properties = array();
+	private $container = array();
 	
 	/**
 	 * Reads app config file(s), sets appropriate config array to $this->properties
@@ -33,19 +33,26 @@ class Config {
 	function __construct($environment)
 	{
 		$configs = include(APPPATH.'config/application.php');
-		$this->properties = $configs[$environment];
+		$this->container = $configs[$environment];
 	}
 	
-	/**
-	 * Retrieves 
-	 *
-	 * @param string $key 
-	 * @return void
-	 * @author Andrew Perlitch
-	 */
-	public function get($key)
-	{
-		if( ! array_key_exists($key, $this->properties) ) throw new ConfigException("Config key:'$key' not found in config data.");
-		return $this->properties[$key];
-	}
+	public function offsetSet($offset, $value) {
+        throw new ConfigException("Setting config data not allowed.");
+    }
+
+    public function offsetExists($offset) {
+        return isset($this->container[$offset]);
+    }
+
+    public function offsetUnset($offset) {
+        unset($this->container[$offset]);
+    }
+
+    public function offsetGet($offset) {
+        if ( isset($this->container[$offset]) ) {
+			return $this->container[$offset];
+		}
+		throw new ConfigException("Config key:'$offset' not found in config data.");
+    }
+
 }

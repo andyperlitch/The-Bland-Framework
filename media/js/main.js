@@ -471,17 +471,6 @@ function initHsTabs(ajax){
     });
   });
 }
-function pushHistory(title,href)
-{
-  var curTime = new Date().getTime();
-  var stateObj = {
-    windowName:window.name,
-    href:href,
-    title:title,
-    time:curTime
-  };
-  history.pushState(stateObj, stateObj.title, stateObj.href);
-}
 function isIE()
 {
   return (navigator.appName == 'Microsoft Internet Explorer');
@@ -490,7 +479,7 @@ function isIE()
 ICanHaz.js version 0.10 -- by @HenrikJoreteg
 More info at: http://icanhazjs.com
 */
-(function () {
+;(function () {
 /*
   mustache.js — Logic-less templates in JavaScript
 
@@ -1029,6 +1018,9 @@ var Mustache = function () {
 })();
 })();
 
+/*!
+Numeric Entry plugin
+*/
 ;(function($){
   $.fn.numericEntry = function(options){
     var opts = $.extend({}, $.fn.numericEntry.defaults, options);
@@ -1105,69 +1097,3 @@ var Mustache = function () {
     defaultVal:'0'
   }
 })(jQuery);
-
-// /**
-//  * Sets behavior for quantity fields
-// */
-// function initQuantFields()
-// {
-//   $(".cat-quant")
-//     .bind('focus',function(){
-//       // grab the field and value
-//       var $this = $(this),
-//         val = $this.val();
-//       
-//       // take off .gray class
-//       $this.removeClass('gray');
-//     
-//       // if zero, make nothing, else highlight
-//       if (val <= 0) $this.val('');
-//       else $this.select();
-//       
-//       // clear any previous blur and keydown events
-//       $this
-//         .unbind('blur keydown')
-//         .bind('keydown',function(event){
-//           return isNumericEntry(event.which);
-//         })
-//         .bind('blur',function(){
-//           var computedVal = cleanNumericValue($this.val());
-//           if (computedVal === '') $this.addClass('gray').val('0');
-//           else $this.val(computedVal);
-//         });
-//     });
-// }
-// 
-// /**
-//  * Checks if keyCode provided is OK for numeric entry
-//  * 
-//  * @var Int keyCode       : code of key stroke
-//  * @return Bool
-// */
-// function isNumericEntry(keyCode)
-// {
-//   // standard number keys
-//   var isStandard = (keyCode > 47 && keyCode < 58);
-//   
-//   // extended keyboard numbers (keypad)
-//   var isExtended = (keyCode > 95 && keyCode < 106);
-//   
-//   // backspace, forward delete, arrows
-//   var isOther = ( ',8,37,38,39,40,46,'.indexOf(','+keyCode+',') > -1);
-//   
-//   // check for vals
-//   if( isStandard || isExtended || isOther ) return true
-//   else return false;
-// }
-// 
-// /**
-//  * Cleans a value of non-numeric chars
-//  * 
-//  * @param String value     : value to be eval'd and cleaned
-//  * @return String newValue
-// */
-// function cleanNumericValue(value)
-// {
-//   var pattern = new RegExp('[^0-9]+','g');
-//   return value.replace(pattern,'');
-// }
