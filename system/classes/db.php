@@ -93,8 +93,8 @@ class DB extends mysqli{
 	 * @author Andrew Perlitch
 	 */
 	public function sel(
-		$table_name, 
 		array $fields = array(), 
+		$table_name,
 		array $joins = array(), 
 		array $where = array(), 
 		array $order = array(), 
@@ -111,80 +111,19 @@ class DB extends mysqli{
 		$whereWord = "WHERE";
 		
 		// fields clause
-		if ( empty($fields) ) $query .= "*";
-		else {
-			foreach ($fields as $field) {
-				// check if array
-				if ( is_array($field) ) {
-					$elems = count($field);
-					switch ($elems) {
-						// one elem, check if string
-						case 1:
-							if ( is_string($field[0]) ) $query .= "`{$field[0]}`, ";
-							else throw new DBException("Wrong format for fields param");
-						break;
-						// two elems, field AS alias
-						case 2:
-							$query .= "`{$field[0]}` AS `{$field[1]}`, ";
-						break;
-						// three elems, table.field AS alias
-						case 3:
-							$query .= "`{$field[0]}`.`{$field[1]}` AS `{$field[2]}`, ";
-						break;
-						// issue with array
-						default:
-							throw new DBException("Too many (or zero) elements in (one or more of the) fields arrays");
-						break;
-					}
-				}
-				// check to ensure string
-				elseif ( is_string($field) ) $query .= "`{$field}`, ";
-				// throw exc
-				else throw new DBException("Invalid \$field value. Must be string or array");
-			}
-		}
+		$this->buildFieldClause($fields,$query);
 		
 		// add from clause
-		$query = rtrim($query,', ');
 		$query .= " FROM `$table_name`";
 		
 		// do joins, if there
-		if ( !empty($joins) ) {
-			
-			if (is_array($joins[0])) {
-				foreach ($joins as $join) {
-					$this->buildJoinClause($join, $query, $table_name );
-				}
-			} else {
-				$this->buildJoinClause($joins, $query, $table_name );
-			}
-			
-		}
+		if ( !empty($joins) ) $this->buildJoinClauses($joins, $query, $table_name );
 		
 		// check for where clauses
-		if ( ! empty($where) ) {
-			$this->buildWhereClauses( $where, $whereWord, $query, $params, $paramTypes);
-		}
+		if ( ! empty($where) ) $this->buildWhereClauses( $where, $whereWord, $query, $params, $paramTypes);
 		
 		// check order
-		// format of order: array(string table, string field, bool asc)
-		//              or: array( array(string table, string field, bool asc), ... )
-		if ( !empty($order) ) {
-			// start order clause
-			$query .= " ORDER BY ";
-			// check if multiple order statements
-			if ( is_array($order[0]) ) {
-				// loop through order statement array
-				foreach ($order as $ordItem) {
-					$this->buildOrderClause($query, $ordItem);
-				}
-			} else {
-				// do single order statement
-				$this->buildOrderClause($query, $order);
-			}
-			// take out column at end
-			$query = rtrim($query,',');
-		}
+		if ( !empty($order) ) $this->buildOrderClauses($order,$query);
 
 		// check if offset & limit was supplied
 		if ( $limit !== NULL && $offset !== NULL ) {
@@ -196,28 +135,8 @@ class DB extends mysqli{
 		// add semicolon
 		$query .= ";";
 		
-		// prep statement
-		if ( !($stmt = $this->prep($query)) ) throw new DBException("failed to prepare SELECT query. \$query: \"$query\"");
-		
-		// fill reference array
-		foreach($params as $key => $value){
-			$paramReferences[$key] = &$params[$key];  
-		}
-
-		// prepend paramTypes to array
-		array_unshift($paramReferences,$paramTypes);
-		
-		if ( !empty($params) ) {
-			try {
-				// call bind_param
-				$bindParamsMethod->invokeArgs($stmt,$paramReferences);
-			} catch (Exception $e) {
-				throw new DBException("Likely an error in query: ".$this->error.", or problem with bind_param: {$e->getMessage()}");
-			}
-		}
-		
-		// execute statement
-		$this->exec($stmt);
+		// prepare, bind params, and execute
+		$stmt = $this->prepBindExec($query, $params, $paramReferences, $paramTypes, $bindParamsMethod);
 		
 		if ( $limit === 1 ) return $this->mfa($stmt);
 		else return $this->mfa2($stmt);
@@ -299,26 +218,8 @@ class DB extends mysqli{
 		// concat statement
 		$query .= $fields . " VALUES " . $values . ";";
 
-		// prepare query
-		if ( ! ($stmt = $this->prep($query)) ) throw new DBException("Could not prepare INSERT query.");
-
-		// fill reference array
-		foreach($params as $key => $value){
-			$paramReferences[$key] = &$params[$key];  
-		}
-
-		// prepend paramTypes to array
-		array_unshift($paramReferences,$paramTypes);
-		
-		try {
-			// call bind_param
-			$bindParamsMethod->invokeArgs($stmt,$paramReferences);
-		} catch (Exception $e) {
-			throw new DBException("Likely an error in query: ".$this->error);
-		}
-
-		// execute statement
-		$this->exec($stmt);
+		// prepare, bind params, and execute
+		$stmt = $this->prepBindExec($query, $params, $paramReferences, $paramTypes, $bindParamsMethod);
 
 		// get insert id (using procedural approach b/c issue with larger ints with OOP: http://php.net/manual/en/mysqli.insert-id.php#usernotes)
 		$return_id =  mysqli_insert_id($this);
@@ -387,23 +288,8 @@ class DB extends mysqli{
 		// add semicolon
 		$query .= ";";
 		
-		// prep statement
-		if ( !($stmt = $this->prep($query)) ) throw new DBException("failed to prepare UPDATE query. \$query: \"$query\"");
-		
-		// fill reference array
-		foreach($params as $key => $value){
-			$paramReferences[$key] = &$params[$key];  
-		}
-
-		// prepend paramTypes to array
-		array_unshift($paramReferences,$paramTypes);
-		
-		try {
-			// call bind_param
-			$bindParamsMethod->invokeArgs($stmt,$paramReferences);
-		} catch (Exception $e) {
-			throw new DBException("Likely an error in query: ".$this->error);
-		}
+		// prepare, bind params, and execute
+		$stmt = $this->prepBindExec($query, $params, $paramReferences, $paramTypes, $bindParamsMethod);
 		
 		// return true
 		return true;
@@ -591,6 +477,72 @@ class DB extends mysqli{
 	}
 	
 	/**
+	 * Builds fields clauses for select statements
+	 *
+	 * @param array $fields      array of fields to select
+	 * @param string $query      query to modify
+	 * @return void
+	 * @author Andrew Perlitch
+	 */
+	protected function buildFieldClause(array $fields, &$query)
+	{
+		if ( empty($fields) ) $query .= "*";
+		else {
+			foreach ($fields as $field) {
+				// check if array
+				if ( is_array($field) ) {
+					$elems = count($field);
+					switch ($elems) {
+						// one elem, check if string
+						case 1:
+							if ( is_string($field[0]) ) $query .= "`{$field[0]}`, ";
+							else throw new DBException("Wrong format for fields param");
+						break;
+						// two elems, field AS alias
+						case 2:
+							$query .= "`{$field[0]}` AS `{$field[1]}`, ";
+						break;
+						// three elems, table.field AS alias
+						case 3:
+							$query .= "`{$field[0]}`.`{$field[1]}` AS `{$field[2]}`, ";
+						break;
+						// issue with array
+						default:
+							throw new DBException("Too many (or zero) elements in (one or more of the) fields arrays");
+						break;
+					}
+				}
+				// check to ensure string
+				elseif ( is_string($field) ) $query .= "`{$field}`, ";
+				// throw exc
+				else throw new DBException("Invalid \$field value. Must be string or array");
+			}
+		}
+		$query = rtrim($query,', ');
+	}
+	
+	/**
+	 * Builds join clause from supplied joins arg.
+	 *
+	 * @param array $joins         Join array
+	 * @param string $query        Query to modify
+	 * @param string $table_name   Table name of initial SELECT
+	 * @return void
+	 * @author Andrew Perlitch
+	 * @uses self::buildJoinClause
+	 */
+	protected function buildJoinClauses(array $joins, &$query, $table_name )
+	{
+		if (is_array($joins[0])) {
+			foreach ($joins as $join) {
+				$this->buildJoinClause($join, $query, $table_name );
+			}
+		} else {
+			$this->buildJoinClause($joins, $query, $table_name );
+		}
+	}
+	
+	/**
 	 * Builds join clauses for DB::sel().
 	 *
 	 * @param array $join         Array of join clause options
@@ -605,6 +557,7 @@ class DB extends mysqli{
 		//             or: array(TABLENAME, FIELD_BOTH_TBLS)
 		//             or: array(TABLENAME, FIELD_MAIN_TBL, FIELD_JOINING_TBL, TYPE_OF_JOIN)
 		$elems = count($join);
+		$on_clause = is_array($join[1]) ? "`{$join[1][0]}`.`{$join[1][0]}`" : "`$table_name`.`{$join[1]}`" ;
 		switch ($elems) {
 			case 4:
 				// check join type
@@ -612,13 +565,13 @@ class DB extends mysqli{
 					throw new DBException("4th elem in join array does not have valid join type:\$join[3] = '{$join[3]}'");
 					
 				// add to query
-				$query .= " {$join[3]} JOIN `{$join[0]}` ON `$table_name`.`{$join[1]}` = `{$join[0]}`.`{$join[2]}`";
+				$query .= " {$join[3]} JOIN `{$join[0]}` ON $on_clause = `{$join[0]}`.`{$join[2]}`";
 			break;
 			case 3:
-				$query .= " LEFT JOIN `{$join[0]}` ON `$table_name`.`{$join[1]}` = `{$join[0]}`.`{$join[2]}`";
+				$query .= " LEFT JOIN `{$join[0]}` ON $on_clause = `{$join[0]}`.`{$join[2]}`";
 			break;
 			case 2:
-				$query .= " LEFT JOIN `{$join[0]}` ON `$table_name`.`{$join[1]}` = `{$join[0]}`.`{$join[1]}`";
+				$query .= " LEFT JOIN `{$join[0]}` ON $on_clause = `{$join[0]}`.`{$join[1]}`";
 			break;
 			default:
 				throw new DBException("\$join array has too many or too few elements");
@@ -678,7 +631,7 @@ class DB extends mysqli{
 			$query .= " $whereWord `{$where[0]}` {$where[1]} {$where[2]}";
 			// change whereword, continue
 			if ( $whereWord == "WHERE" ) $whereWord = "AND";
-			continue;
+			return;
 		}
 
 		// parameterize
@@ -695,6 +648,34 @@ class DB extends mysqli{
 	}
 	
 	/**
+	 * Builds order clause(s).
+	 *
+	 * @param array $order     array of order clauses
+	 * @param string $query    query to modify
+	 * @return void
+	 * @author Andrew Perlitch
+	 */
+	protected function buildOrderClauses(array $order, &$query)
+	{
+		// format of order: array(string table, string field, bool asc)
+		//              or: array( array(string table, string field, bool asc), ... )
+		// start order clause
+		$query .= " ORDER BY ";
+		// check if multiple order statements
+		if ( is_array($order[0]) ) {
+			// loop through order statement array
+			foreach ($order as $ordItem) {
+				$this->buildOrderClause($query, $ordItem);
+			}
+		} else {
+			// do single order statement
+			$this->buildOrderClause($query, $order);
+		}
+		// take out column at end
+		$query = rtrim($query,',');
+	}
+	
+	/**
 	 * Builds order clause.
 	 *
 	 * @param string $query 
@@ -707,6 +688,47 @@ class DB extends mysqli{
 		if ( count($order) !== 3 ) throw new DBException("Order array passed to buildOrderClause was not in the correct format (3 elements)");
 		$query .= "`{$order[0]}`.`{$order[1]}` ";
 		$query .= $order[2] ? "ASC," : "DESC,";
+	}
+	
+	/**
+	 * Prepares statement, binds params given ReflectionMethod, and (optionally) executes statement.
+	 *
+	 * @param string $query                        Query to prepare
+	 * @param array $params                        Array of params to store in param refs
+	 * @param string $paramReferences              Array of param references
+	 * @param string $paramTypes                   String of param types for bind_param
+	 * @param ReflectionMethod $bindParamsMethod   Reflection method to execute
+	 * @param bool $exec                           Whether or not to execute generated statement.
+	 * @return mysqli_stmt_extended                statement created by prepare
+	 * @author Andrew Perlitch
+	 */
+	protected function prepBindExec(&$query, array $params, array &$paramReferences, &$paramTypes, ReflectionMethod &$bindParamsMethod, $exec = true)
+	{
+		// prep statement
+		if ( !($stmt = $this->prep($query)) ) throw new DBException("failed to prepare query. \$query: \"$query\"");
+		
+		// fill reference array
+		foreach($params as $key => $value){
+			$paramReferences[$key] = &$params[$key];  
+		}
+
+		// prepend paramTypes to array
+		array_unshift($paramReferences,$paramTypes);
+		
+		if ( !empty($params) ) {
+			try {
+				// call bind_param
+				$bindParamsMethod->invokeArgs($stmt,$paramReferences);
+			} catch (Exception $e) {
+				throw new DBException("Likely an error in query: ".$this->error.", or problem with bind_param: {$e->getMessage()}");
+			}
+		}
+		
+		// execute statement
+		if ($exec) $this->exec($stmt);
+		
+		// return statement
+		return $stmt;
 	}
 	
 	/**

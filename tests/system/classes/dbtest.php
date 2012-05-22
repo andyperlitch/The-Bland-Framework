@@ -235,15 +235,15 @@ class DBTest extends PHPUnit_Framework_TestCase {
 	
 	public function testSel1()
 	{
-		$result = $this->db->sel('test_table', array() );
+		$result = $this->db->sel(array(), 'test_table' );
 		$this->assertTrue(is_array($result) , 'result should be an array');
 	}
 	
 	public function testSel2()
 	{
 		$result = $this->db->sel(
-			'test_table',                                      // table name
 			array('name','type'),                              // field names
+			'test_table',                                      // table name
 			array("test_join_table", "type_id", "id"),         // joins
 			array('name','REGEXP','a'),                        // where clauses
 			array('test_table', 'type_id', false),             // order clause
@@ -257,6 +257,7 @@ class DBTest extends PHPUnit_Framework_TestCase {
 	{
 		try {
 			$this->db->sel(
+				array(),
 				'not_a_table'
 			);
 		} catch (DBException $e) {
