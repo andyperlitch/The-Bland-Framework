@@ -27,22 +27,27 @@ class Factory_Controller extends Factory{
 		$res = new Response();
 		$fm = new Factory_Model($c);
 		$fv = new Factory_View();
-		
-		// Reads config file with route info
-		$routes = include(APPPATH.'config/routes.php');
-		
-		// Get request params (must include action key and controller key)
-		$params = $this->_getRequestParams($routes, $req->uri());
-		
-		// set request params in Request object
-		$req->setParams($params);
-		
 		try {
+			// Reads config file with route info
+			$routes = include(APPPATH.'config/routes.php');
+		
+			// Get request params (must include action key and controller key)
+			$params = $this->_getRequestParams($routes, $req->uri());
+		
+			// set request params in Request object
+			$req->setParams($params);
+			
 			// Returns correct child object of Controller.
 			$class = new $params['controller']($c, $req, $s, $res, $fm, $fv, $params['action']);
 			if( !method_exists($params['controller'],$params['action'])) throw new Exception("Action '{$params['action']}' not found in controller");
 			return $class;
-		} catch (Exception $e) {
+		}
+		catch (FactoryException $e) {
+			Error::logExc( $e , __FILE__ , __LINE__ );
+			// Return 404 page
+			return new Controller_Error($c, $req, $s, $res, $fm, $fv, 'action_404');
+		} 
+		catch (Exception $e) {
 			// Return 404 page
 			return new Controller_Error($c, $req, $s, $res, $fm, $fv, 'action_404');
 		}
