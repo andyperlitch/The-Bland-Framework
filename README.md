@@ -1,7 +1,7 @@
 # The Bland Framework: A light-weight PHP Framework
 * * *
 
-Based on the kohana framework without as many bells and whistles, as well as less globals/statics. I am not a PHP ninja. Pull at your own risk.
+Based on the kohana framework without as many bells and whistles, as well as less globals/statics. Feel free to send pull requests or provide any feedback.
 
 ## General Goals for the project:
 1. **Loose Coupling**
