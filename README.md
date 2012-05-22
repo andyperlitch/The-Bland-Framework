@@ -1,7 +1,7 @@
 # The Bland Framework: A light-weight PHP Framework
 * * *
 
-I am not a PHP ninja. Pull at your own risk.
+Based on the kohana framework without as many bells and whistles, as well as less globals/statics. I am not a PHP ninja. Pull at your own risk.
 
 ## General Goals for the project:
 1. **Loose Coupling**
@@ -34,3 +34,6 @@ I am not a PHP ninja. Pull at your own risk.
 	
 4. **Config**
 	1. in the `/app/config/application.php` config file, change 'domain' keys to match your environment
+	
+5. **Absolute Path Constant**
+	1. For local development environment, change "localhost:8888" if not using MAMP/WAMP (or using them with another port)

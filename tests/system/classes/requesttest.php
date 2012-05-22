@@ -21,7 +21,7 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 				// cookie
 				'HTTP_COOKIE' => 'SESSION=34d132dee44d5f036087aabaf82c65f6; __utma=111872281.39029251.1320881510.1328393513.1328731845.57; __utmz=111872281.1320881510.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); re_ret=2; lang=cd3422f8124cf4e1fe8430abbf24e94b218352cc%7Een; SQLiteManager_currentLangue=2; PHPSESSID=34d132dee44d5f036087aabaf82c65f6; session=bdc9af34caf213bb06792ca5fef16e1e34500024%7E4f67e13101bcc1-50459547',
 				// ajax request
-				'HTTP_X_REQUESTED_WITH' => 'xmlhttprequest',
+				'HTTP_X_REQUESTED_WITH' => 'XmlHttpRequest',
 				// IP address
 				'REMOTE_ADDR' => '127.0.0.1',
 				// method
@@ -49,7 +49,7 @@ class RequestTest extends PHPUnit_Framework_TestCase {
 				// cookie
 				'HTTP_COOKIE' => 'SESSION=34d132dee44d5f036087aabaf82c65f6; __utma=111872281.39029251.1320881510.1328393513.1328731845.57; __utmz=111872281.1320881510.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); re_ret=2; lang=cd3422f8124cf4e1fe8430abbf24e94b218352cc%7Een; SQLiteManager_currentLangue=2; PHPSESSID=34d132dee44d5f036087aabaf82c65f6; session=bdc9af34caf213bb06792ca5fef16e1e34500024%7E4f67e13101bcc1-50459547',
 				// ajax request
-				'HTTP_X_REQUESTED_WITH' => 'xmlhttprequest',
+				'HTTP_X_REQUESTED_WITH' => 'XmlHttpRequest',
 				// IP address
 				'REMOTE_ADDR' => '127.0.0.1',
 				// method

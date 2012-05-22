@@ -144,7 +144,7 @@ class Validator{
 		return $this->post[$key];
 	}
 	
-	protected function equals($key, $value)
+	protected function equal($key, $value)
 	{
 		if ($this->post[$key] != $value) return false;
 		return $this->post[$key];

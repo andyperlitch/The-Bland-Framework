@@ -19,6 +19,8 @@ class Request {
 	protected $server;
 	protected $get;
 	protected $post;
+	protected $files;
+	protected $ajax = null;
 	protected $requestParams = array();
 	
 	/**
@@ -31,11 +33,12 @@ class Request {
 	 * @param array $post 
 	 * @author Andrew Perlitch
 	 */
-	function __construct(array $server, array $get, array $post)
+	function __construct(array $server, array $get, array $post, array $files = null)
 	{
 		$this->server = $server;
 		$this->get = $get;
 		$this->post = $post;
+		$this->files = $files;
 	}
 	
 	/**
@@ -57,7 +60,10 @@ class Request {
 	 */
 	public function isAjax()
 	{
-		return array_key_exists('HTTP_X_REQUESTED_WITH', $this->server) && $this->server['HTTP_X_REQUESTED_WITH'] == 'xmlhttprequest';
+		if ( $this->ajax === null ) {
+			$this->ajax = array_key_exists('HTTP_X_REQUESTED_WITH', $this->server) && strtolower($this->server['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
+		}
+		return $this->ajax;
 	}
 	
 	/**
@@ -69,6 +75,11 @@ class Request {
 	public function method()
 	{
 		return $this->server['REQUEST_METHOD'];
+	}
+	
+	public function isPost()
+	{
+		return $this->method() == 'POST';
 	}
 	
 	/**
@@ -109,6 +120,20 @@ class Request {
 	{
 		return $this->server['HTTP_USER_AGENT'];
 	}
+
+	/**
+	 * Returns key from $_FILES or $_FILES itself
+	 *
+	 * @param string $key 
+	 * @return void
+	 * @author Andrew Perlitch
+	 */
+	public function files($key = NULL)
+	{
+		if($key === NULL) return $this->files;
+		if(array_key_exists($key, $this->files)) return $this->files[$key];
+		throw new RequestException("No key found in files array. key: '$key'");
+	}
 	
 	/**
 	 * Returns IP address of user who made request.
@@ -131,4 +156,66 @@ class Request {
 		if ( $key === NULL ) return $this->requestParams;
 		else return $this->requestParams[$key];
 	}
+	
+	public function isHttps()
+	{
+		return array_key_exists('HTTPS', $this->server ) AND $this->server['HTTPS'] === "on";
+	}
+	
+	/**
+	 * Redirects to same or specified url, with or without https.
+	 * If $https is NULL, will redirect to current protocol.
+	 * If $https is false, will redirect to http://
+	 * If $https is true, will redirect to https://
+	 *
+	 * @param  String $uri              URI to redirect to. If null, will redirect to current url 
+	 * @param  Mixed/Bool/NULL $https   Variable that says whether to go to http, https, or current 
+	 * @param  Bool $regardless         Redirect regardless 
+	 * @return void                
+	 * @author Andrew Perlitch
+	 */
+	public function redirect($uri = NULL, $https = NULL, $regardless = false){
+		// a uri same as $this->uri is equivalent to $uri being null
+		$uri = ( $uri == $this->uri() ) ? NULL : $uri;
+		
+		// set uri
+		$redirect_uri = ($uri == NULL) ? $this->uri() : $uri ;
+		
+		// check whether asking for https
+		if ( $https === true ) {
+			
+			// if not https, definitely redirect
+			if ( ! $this->isHttps() ) {
+				$location = "https://".$this->server['HTTP_HOST'] . $uri;
+				header("Location: $location");
+				exit();
+			}
+			// if IS https, check if uri is null or if regardless was true
+			elseif ( $uri !== NULL OR $regardless ) {
+				$location = $redirect_uri;
+				header("Location: $location");
+				exit();
+			}
+
+		} elseif ( $https === false ) {
+			
+			// if not http, definitely redirect
+			if ( $this->isHttps() ) {
+				$location = "http://".$this->server['HTTP_HOST'] . $uri;
+				header("Location: $location");
+				exit();
+			}
+			// if IS http, check if uri is null or if regardless was true
+			elseif ( $uri !== NULL OR $regardless ) {
+				$location = $redirect_uri;
+				header("Location: $location");
+				exit();
+			}
+			
+		} elseif ( $uri !== NULL OR $regardless ) {
+				$location = $redirect_uri;
+				header("Location: $location");
+				exit();
+		}
+	}			
 }

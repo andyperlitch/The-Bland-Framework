@@ -13,7 +13,7 @@ spl_autoload_register(array('AutoLoader', 'autoload'));
 $factory = new Factory_Controller();
 
 // Build controller
-$controller = $factory->build($_SERVER, $_GET, $_POST, $environment);
+$controller = $factory->build($_SERVER, $_GET, $_POST, $_FILES, $environment);
 
 // Clean up $environment global
 unset($environment);

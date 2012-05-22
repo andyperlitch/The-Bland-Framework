@@ -18,11 +18,11 @@ class Factory_Controller extends Factory{
 	 * @return void
 	 * @author Andrew Perlitch
 	 */
-	public function build(array $server, array $get, array $post, $environment)
+	public function build(array $server, array $get, array $post, array $files, $environment)
 	{
 		// instantiate new config, request, and session objects for controller.
 		$c = new Config($environment);
-		$req = new Request($server, $get, $post);
+		$req = new Request($server, $get, $post, $files);
 		$s = new Session();
 		$res = new Response();
 		$fm = new Factory_Model($c);

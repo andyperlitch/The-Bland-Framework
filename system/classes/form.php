@@ -94,7 +94,7 @@ class Form {
 		$attributes = array_merge($default_attributes, $attributes);
 		
 		// begin fieldset
-		$html = '<fieldset id="'.$name.'-fieldset"';
+		$html = '<p id="'.$name.'-wrapper"';
 		$html .= $err ? ' class="input-error"' : '';
 		$html .= '>';
 		
@@ -131,7 +131,7 @@ class Form {
         }
 		
 		// end fieldset
-        $html .= '</fieldset>';
+        $html .= '</p>';
         return $html;
 	}
 	

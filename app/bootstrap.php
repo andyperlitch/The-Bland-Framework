@@ -6,11 +6,18 @@
 $application = 'app';
 
 /**
- * The directory in which the Kohana resources are located. 
+ * The directory in which the system resources are located. 
  * The system directory must contain the classes/controller.php 
  * and classes/model.php files.
  */
 $system = 'system';
+
+/**
+ * The directory in which the module resources are located. 
+ * Each module directory must have folder structure similar to app.
+ * and classes/model.php files.
+ */
+$modules = 'modules';
 
 /**
  * Set the full path to the docroot
@@ -29,11 +36,27 @@ if ( is_dir(DOCROOT.$application))
 if ( is_dir(DOCROOT.$system))
 	$system = DOCROOT.$system;
 	
+/**	
+ * Make the system relative to the docroot, for symlink'd index.php
+ */
+if ( is_dir(DOCROOT.$modules))
+	$modules = DOCROOT.$modules;
+	
 /**
  * Define the absolute path for app directory
  */
 define('APPPATH', realpath($application).DIRECTORY_SEPARATOR);
 define('SYSPATH', realpath($system).DIRECTORY_SEPARATOR);
+define('MODPATH', realpath($modules).DIRECTORY_SEPARATOR);
+
+/**
+ * Define absolute url for links etc.
+ */
+$protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://';
+$servername = ( isset($_SERVER['HTTP_HOST']) ) ? $_SERVER['HTTP_HOST'] : 'localhost:8888';
+define('ABSPATH', $protocol . $servername);
+unset($protocol);
+unset($servername);
 
 /**
  * Clean up the configuration vars

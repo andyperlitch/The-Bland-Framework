@@ -24,6 +24,7 @@ class Factory_ControllerTest extends PHPUnit_Framework_TestCase {
 				),
 				array(),
 				array(),
+				array(),
 				'local'
 			);
 		$this->assertInstanceOf('Controller',$controller);
@@ -37,6 +38,7 @@ class Factory_ControllerTest extends PHPUnit_Framework_TestCase {
 				),
 				array(),
 				array(),
+				array(),
 				'local'
 			);
 			
@@ -46,6 +48,7 @@ class Factory_ControllerTest extends PHPUnit_Framework_TestCase {
 				),
 				array(),
 				array(),
+				array(),
 				'local'
 			);
 			
@@ -53,6 +56,7 @@ class Factory_ControllerTest extends PHPUnit_Framework_TestCase {
 				array(
 					'REQUEST_URI' => '/home/asdfkajsdf/J*(#)#(?#J#IU#I)J?@J#?###?#/'
 				),
+				array(),
 				array(),
 				array(),
 				'local'

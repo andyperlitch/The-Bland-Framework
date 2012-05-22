@@ -49,4 +49,6 @@ class Session {
 		return $_SESSION[__CLASS__]['uid'];
 	}
 	
+	
+	
 }
