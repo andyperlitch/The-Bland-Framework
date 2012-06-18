@@ -15,13 +15,16 @@ class Factory_Model extends Factory{
 		$this->config = $c;
 	}
 	
-	public function build( $className, $args = array(), $database = true )
+	public function build( $className, $args = array(), $database = true, $config = true )
 	{
 		// compute class name
 		$className = $this->_getClassName($className, 'Model_');
 		
 		// set db object (or lack thereof)
 		if($database) $args[] = new DB($this->config);
+		
+		// set config 
+		if($config) $args[] = $this->config;
 		
 		// Multiple parameters
 		$object = new ReflectionClass($className);

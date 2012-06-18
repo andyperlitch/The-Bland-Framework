@@ -1,0 +1,41 @@
+@charset "UTF-8";
+.flixSlider-container{
+	overflow:auto;
+	opacity:0; /* for nice transition */
+	position:relative;
+}
+.flixSlider-scroll{
+	position:relative;
+/* left:0;*/
+}
+.flixSlider-scroll a{
+	margin:0 4px 0 0;
+	display:block;
+	float:left;
+}
+.flixSlider-scroll img{
+	border:1px solid #000000;
+}
+.flixSlider-scroll a:hover img{
+	border-color:#FFFFFF;
+}
+.flixSlider-ButtonPrev,.flixSlider-ButtonNext{
+	background: transparent;
+	position: absolute;
+	width:0;
+	height:0;
+	border-style:solid;
+	border-color:transparent black transparent transparent;
+	display:none;
+	z-index: 1;
+}
+.flixSlider-ButtonNext{
+	right:0;
+	border-width:5.5em 0 5.5em 2em;
+	padding-right:0.7em;
+}
+.flixSlider-ButtonPrev{
+	left:0;
+	border-width:5.5em 2em 5.5em 0em;
+	padding-left:0.7em;
+}

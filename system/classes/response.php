@@ -14,7 +14,7 @@ class Response{
 	/**
 	 * Body of response, as string.
 	 *
-	 * @var string
+	 * @var mixed
 	 */
 	protected $body;
 	
@@ -36,9 +36,10 @@ class Response{
 	 * @return void
 	 * @author Andrew Perlitch
 	 */
-	public function body($content)
+	public function body($content,$equal=false)
 	{
-		$this->body .= $content;
+		if ( $equal ) $this->body = $content;
+		else $this->body .= $content;
 	}
 
 	/**
@@ -76,8 +77,17 @@ class Response{
 		// check if headers already sent
 		if (! headers_sent() ) $this->sendHeaders(); 
 		
-		// echo body of response
-		echo $this->body;
+		// check if body is an array
+		if ( is_array($this->body) ) {
+			// add json header
+			$this->headers['Content-Type'] = 'application/json; charset=utf-8';
+			// echo the json-encoded array
+			echo json_encode( utf8_encode($this->body) );
+			
+		} else {
+			// echo body of response
+			echo $this->body;
+		}
 	}
 	
 	/**

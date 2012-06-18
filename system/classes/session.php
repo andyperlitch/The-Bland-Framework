@@ -15,7 +15,7 @@ class SessionException extends Exception{}
  * @package Session
  * @author Andrew Perlitch
  */
-class Session {
+class Session implements arrayaccess{
 	
 	function __construct()
 	{
@@ -28,7 +28,7 @@ class Session {
 			// Start the session
 			session_start();
 		}
-
+		
 		// Set the user ID
 	    if ( isset($_COOKIE['SESSION']) ) {
 	        $_SESSION[__CLASS__]['uid'] = $_COOKIE['SESSION'];
@@ -49,6 +49,24 @@ class Session {
 		return $_SESSION[__CLASS__]['uid'];
 	}
 	
-	
+	public function offsetSet($offset,$value)
+	{
+		$_SESSION[__CLASS__][$offset] = $value;
+	}
+	public function offsetExists($offset)
+	{
+		return isset($_SESSION[__CLASS__][$offset]);
+	}
+	public function offsetUnset($offset)
+	{
+		unset($_SESSION[__CLASS__][$offset]);
+	}
+	public function offsetGet($offset)
+	{
+		if ( isset($_SESSION[__CLASS__][$offset]) ) {
+			return $_SESSION[__CLASS__][$offset];
+		}
+		throw new SessionException("Session key:'$offset' not found in session data.");
+	}
 	
 }

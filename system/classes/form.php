@@ -82,7 +82,7 @@ class Form {
 		return $compiled;
 	}
 	
-	public static function createFormInput($name,$title,$type,$value=NULL,$errors=array(),$note='',array $attributes=array(),array $values=NULL)
+	public static function createFormInput($name,$title,$type,$value=NULL,$post=array(),$errors=array(),$note='',array $attributes=array(),array $values=NULL)
 	{	
 		// error condition
 		$err = array_key_exists($name,$errors);
@@ -97,6 +97,9 @@ class Form {
 		$html = '<p id="'.$name.'-wrapper"';
 		$html .= $err ? ' class="input-error"' : '';
 		$html .= '>';
+		
+		// check post for value
+		if (array_key_exists($name,$post)) $value = $post[$name];
 		
 		switch ($type) {
 			case 'select':
@@ -143,12 +146,16 @@ class Form {
 			$text = ucwords(preg_replace('/[\W_]+/', ' ', $input));
 		}
 		
-		$text .= ' <span class="err">'.$err_msg.'</span>';
-		
 		// Set the label target
 		$attributes['for'] = $input;
-
-		return '<label'.self::attributes($attributes).'>'.$text.'</label>';
+		
+		// begin return string
+		$res = '<label'.self::attributes($attributes).'>'.$text.'</label>';
+		
+		// check for error
+		if ($err_msg != '') $res .= '<label for="'.$input.'" class="err">'.$err_msg.'</label>';
+		
+		return $res;
 	}
 
 	/**

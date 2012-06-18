@@ -11,6 +11,7 @@
  * @param  String $bclass      class attribute of body element (optional).
  * @param  String $body        Markup inside the body tags.
  * @param  Array $scripts      Array of scripts to be included at the bottom of the page.
+ * @param  String $requirejs   main js file for page, if require js is being used
  * @param  String $js_dir      Directory to js files.
  * @package Templates
  * @author Andrew Perlitch
@@ -31,6 +32,17 @@
 		foreach ($styles as $style) {
 			echo HTML::style($css_dir.$style['href'], $style['media'], @$style['title']);
 		}
+		
+		if ($requirejs) {
+			// check for other scripts
+			if (!empty($scripts)) {
+				foreach($scripts as $script){
+					echo ( preg_match('/^http:\/\//',$script) ) ? HTML::script($script) : HTML::script($js_dir.$script) ;
+				}
+			}
+			// include require script
+			echo '<script src="'.$js_dir.'libs/require.js" data-main="'.$requirejs.'"></script>';
+		}
 		?>
 		<!--[if IE]>
         <link rel="stylesheet" href="/media/css/ie.css" type="text/css" media="screen" charset="utf-8">
@@ -49,8 +61,10 @@
 	<body id="<?=$bid?>"<?php if (isset($bclass)) echo ' class="'.$bclass.'"'?>>
 		<?=$body?>
 		<?php
-		foreach($scripts as $script){
-			echo ( preg_match('/^http:\/\//',$script) ) ? HTML::script($script) : HTML::script($js_dir.$script) ;
+		if (!$requirejs && !empty($scripts)) {
+			foreach($scripts as $script){
+				echo ( preg_match('/^http(?:s)?:\/\//',$script) ) ? HTML::script($script) : HTML::script($js_dir.$script) ;
+			}
 		}
 		?>
 	</body>

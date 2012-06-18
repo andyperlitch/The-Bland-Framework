@@ -1,7 +1,10 @@
 requirejs.config({
-   paths:{
-      'jquery':'http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min',
-      
-   },
-   baseUrl:'/media/js/',
+	paths:{
+		// google CDN
+		'jquery':'http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min',
+		
+		// local jquery
+		// 'jquery':'/media/js/libs/jquery',
+	},
+	baseUrl:'/media/js/',
 });

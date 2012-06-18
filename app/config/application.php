@@ -18,6 +18,11 @@ return array(
 		'options'  => array(
 			
 		),
+		'js_dir' => ABSPATH.'/media/js/',
+		'css_dir' => ABSPATH.'/media/css/',
+		'img_dir' => ABSPATH.'/media/images/',
+		'main_css' => 'main.css',
+		'requirejs' => 'require.js',
 	),
 	
 	'server_testing' => array(
@@ -29,6 +34,11 @@ return array(
 		'options'  => array(
 			
 		),
+		'js_dir' => ABSPATH.'/media/js/',
+		'css_dir' => ABSPATH.'/media/css/',
+		'img_dir' => ABSPATH.'/media/images/',
+		'main_css' => 'main.css',
+		'requirejs' => 'require.js',
 	),
 	
 	'production' => array(
@@ -40,6 +50,11 @@ return array(
 		'options'  => array(
 			
 		),
+		'js_dir' => ABSPATH.'/media/js/',
+		'css_dir' => ABSPATH.'/media/css/',
+		'img_dir' => ABSPATH.'/media/images/',
+		'main_css' => 'main.css',
+		'requirejs' => 'require.js',
 	),
 	'phpunit' => array(
 		'live' => false,
@@ -52,6 +67,7 @@ return array(
 		),
 		'js_dir' => ABSPATH.'/media/js/',
 		'css_dir' => ABSPATH.'/media/css/',
+		'img_dir' => ABSPATH.'/media/images/',
 		'main_css' => 'main.css',
 		'requirejs' => 'require.js',
 	)

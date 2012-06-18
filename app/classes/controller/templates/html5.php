@@ -32,38 +32,22 @@ class Controller_Templates_Html5 extends Controller{
 			// meta tags
 			$this->template['meta_tags'] = array(
 				// charset
-				'charset' => 
-					array(
-						'charset' => 'utf-8'
-					), 
-
+				'charset' => array('charset' => 'utf-8'), 
 				// google opt-out of odp
-				'odp' =>
-					array(
-						'NAME' => 'ROBOTS',
-						'CONTENT' => 'NOODP'
-					),
+				'odp' => array( 'NAME' => 'ROBOTS', 'CONTENT' => 'NOODP'),
 				// description
-				'description' =>
-					array(
-						'name' => 'description',
-						'content' => 'The Bland Framework is a light-weight PHP framework, focused on testability, security, and ease-of-use'
-					),
+				'description' => array(
+					'name' => 'description',
+					'content' => 'The Bland Framework is a light-weight PHP framework, focused on testability, security, and ease-of-use'
+				),
 			);
 
 			// favicon
-			$this->template['favicon'] = array(
-				'href' => '/media/images/favicon.gif',
-				'type' => 'image/gif',
-			);
+			$this->template['favicon'] = array( 'href' => '/media/images/favicon.gif', 'type' => 'image/gif', );
 
 			// directories (used by HTML functions)
 			$this->template['js_dir'] = $this->config['js_dir'];
 			$this->template['css_dir'] = $this->config['css_dir'];
-
-			// scripts
-			$this->template['scripts'][] = $this->config['jquery'];
-			$this->template['scripts'][] = $this->config['main_js'];
 
 			// styles
 			$this->template['styles'][] = array(

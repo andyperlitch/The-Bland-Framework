@@ -9,10 +9,12 @@
 abstract class Model {
 	
 	protected $db;
+	protected $config;
 	
-	function __construct($db = NULL)
+	function __construct(DB $db = NULL, Config $config = NULL)
 	{
 		$this->db = $db;
+		$this->config = $config;
 	}
 	
 }

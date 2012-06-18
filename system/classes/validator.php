@@ -140,13 +140,13 @@ class Validator{
 	
 	protected function notEqual($key, $value)
 	{
-		if ($this->post[$key] === $value) return false;
+		if (trim($this->post[$key]) === $value) return false;
 		return $this->post[$key];
 	}
 	
 	protected function equal($key, $value)
 	{
-		if ($this->post[$key] != $value) return false;
+		if (trim($this->post[$key]) != $value) return false;
 		return $this->post[$key];
 	}
 }
