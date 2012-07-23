@@ -89,10 +89,11 @@ class Request {
 	 * @return mixed
 	 * @author Andrew Perlitch
 	 */
-	public function post($key = NULL)
+	public function post($key = NULL, $emptyReturnsNull = false)
 	{
 		if($key === NULL) return $this->post;
 		if(array_key_exists($key, $this->post)) return $this->post[$key];
+		if ($emptyReturnsNull) return null;
 		throw new RequestException("No key found in post array. key: '$key'");
 	}
 	
@@ -125,7 +126,7 @@ class Request {
 	 * Returns key from $_FILES or $_FILES itself
 	 *
 	 * @param string $key 
-	 * @return void
+	 * @return mixed
 	 * @author Andrew Perlitch
 	 */
 	public function files($key = NULL)
@@ -133,6 +134,20 @@ class Request {
 		if($key === NULL) return $this->files;
 		if(array_key_exists($key, $this->files)) return $this->files[$key];
 		throw new RequestException("No key found in files array. key: '$key'");
+	}
+	
+	/**
+	 * Returns key from $_SERVER or $_SERVER itself
+	 *
+	 * @param string $key 
+	 * @return mixed
+	 * @author Andrew Perlitch
+	 */
+	public function server($key = NULL)
+	{
+		if($key === NULL) return $this->server;
+		if(array_key_exists($key, $this->server)) return $this->server[$key];
+		throw new RequestException("No key found in server array. key: '$key'");
 	}
 	
 	/**

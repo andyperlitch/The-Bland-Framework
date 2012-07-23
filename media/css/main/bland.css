@@ -1,0 +1,14 @@
+a{
+  text-decoration:none;
+  color:#29507D;
+}
+a:hover{
+	color:#296DA7;
+}
+
+body {
+	font-family:"Helvetica Neue",Helvetica, Arial, sans-serif;
+	color:#3D3D3D;
+	background-color:#EFEFEF;
+	text-align:center;
+}

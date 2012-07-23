@@ -36,6 +36,7 @@ require_once('system/classes/factory/modeltest.php');
 require_once('system/classes/htmltest.php');
 require_once('system/classes/validatortest.php');
 require_once('system/classes/dbtest.php');
+require_once('app/classes/model/imagetest.php');
 
 
 class AppTests{
@@ -59,6 +60,7 @@ class AppTests{
 		$ts->addTestSuite('HTMLTest');
 		$ts->addTestSuite('ValidatorTest');
 		$ts->addTestSuite('DBTest');
+		$ts->addTestSuite('Model_ImageTest');
 		
 		return $ts;
 		

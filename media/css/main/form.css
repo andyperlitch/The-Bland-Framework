@@ -1,0 +1,66 @@
+form 
+{
+
+}
+fieldset
+{
+
+}
+
+fieldset legend
+{
+   display:none;
+}
+fieldset p
+{
+
+}
+fieldset p.input-error input, fieldset p.input-error select, fieldset p.input-error textarea
+{
+   -webkit-box-shadow: 0px 0px 3px 0px rgba(225, 10, 10, 0.7);
+   box-shadow: 0px 0px 3px 0px rgba(225, 10, 10, 0.7);
+}
+label,input
+{
+   text-align:left;
+}
+label
+{
+   display:inline-block;
+   width:44%;
+   margin:0 2% 5px 4%;
+   text-align:left;
+}
+label.err
+{
+   color: #CE1212;
+   margin-bottom: 5px;
+   text-align: right;
+   width: 46%;
+   margin:0 4% 5px 0;
+   font-weight:bold;
+}
+input
+{
+   padding:0.5em;
+   display:block;
+   margin:0 auto 5px;
+   width:90%;
+   border-radius:0.5em;
+   border:1px solid #AAAAAA;
+   font-family:inherit;
+   font-size:100%;
+   background: #eaeaea; /* Old browsers */
+   background: -moz-linear-gradient(top,  #eaeaea 0%, #fcfcfc 14%, #ffffff 100%); /* FF3.6+ */
+   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eaeaea), color-stop(14%,#fcfcfc), color-stop(100%,#ffffff)); /* Chrome,Safari4+ */
+   background: -webkit-linear-gradient(top,  #eaeaea 0%,#fcfcfc 14%,#ffffff 100%); /* Chrome10+,Safari5.1+ */
+   background: -o-linear-gradient(top,  #eaeaea 0%,#fcfcfc 14%,#ffffff 100%); /* Opera 11.10+ */
+   background: -ms-linear-gradient(top,  #eaeaea 0%,#fcfcfc 14%,#ffffff 100%); /* IE10+ */
+   background: linear-gradient(top,  #eaeaea 0%,#fcfcfc 14%,#ffffff 100%); /* W3C */
+   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eaeaea', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+
+}
+button
+{
+   margin:1em 0;
+}

@@ -33,7 +33,10 @@ class Factory_Controller extends Factory{
 		
 			// Get request params (must include action key and controller key)
 			$params = $this->_getRequestParams($routes, $req->uri());
-		
+			
+			// check and prep controller name
+			$params['controller'] = $this->_prepControllerName($params['controller']);
+			
 			// set request params in Request object
 			$req->setParams($params);
 			
@@ -106,12 +109,22 @@ class Factory_Controller extends Factory{
 			
 			// All tests pass, change controller and action, then return $merged
 			$merged['controller'] = $this->_getClassName($merged['controller']);
-			$merged['action'] = 'action_'.strtolower($merged['action']);
+			$merged['action'] = 'action_'.$this->_prepActionName($merged['action']);
 			return $merged;
 		}
 		
 		// No routes found
 		throw new FactoryException("No route found for \$uri:'$uri'. Reasons: ".rtrim($reasons,', '));
 		
+	}
+	
+	private function _prepActionName($action)
+	{
+		return strtolower( preg_replace('/[-]/','_',$action) );
+	}
+	
+	private function _prepControllerName($name)
+	{
+		return preg_replace( '/[-]/' , '' , $name  );
 	}
 }

@@ -1,0 +1,6 @@
+/* inline-block fix */
+label
+{
+   zoom:1;
+   display:inline
+}

@@ -119,4 +119,31 @@ abstract class Controller{
 		$this->after();
 		$this->response->send();
 	}
+	
+	public function redirectUser()
+	{
+		// vars
+		$location;
+		
+		// get roles
+		$roles = $this->session["user"]["roles"];
+		
+		// wrap in try-catch for session error when accessing "user" key
+		if ($roles) {
+
+			// determine best home page
+			if ( in_array("admin",$roles) ) {
+				$location = '/admin';
+			} else {
+				$location = '/userhome';
+			}
+			
+		} else {
+			// go to login page
+			$location = '/login';
+		}
+		
+		// redirect to new location
+		$this->request->redirect( $location );
+	}
 }

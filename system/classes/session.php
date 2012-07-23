@@ -66,7 +66,11 @@ class Session implements arrayaccess{
 		if ( isset($_SESSION[__CLASS__][$offset]) ) {
 			return $_SESSION[__CLASS__][$offset];
 		}
-		throw new SessionException("Session key:'$offset' not found in session data.");
+		return NULL;
 	}
-	
+	public function unsetSession()
+	{
+		if(PHP_SAPI !== 'cli') session_destroy();
+		$_SESSION[__CLASS__] = array();
+	}
 }
