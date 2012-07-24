@@ -91,10 +91,10 @@ class Form {
 		// default attributes
 		$default_attributes = array('id' => $name);
 		
-		$attributes = array_merge($default_attributes, $attributes);
+		$new_attributes = array_merge($default_attributes, $attributes);
 		
 		// begin fieldset
-		$html = '<p id="'.$name.'-wrapper"';
+		$html = '<div id="'.$name.'-wrapper"';
 		$html .= $err ? ' class="input-error"' : '';
 		$html .= '>';
 		
@@ -104,27 +104,35 @@ class Form {
 		switch ($type) {
 			case 'select':
 				$html .= self::label($name, $title, NULL, $err_msg);
-				$html .= self::select($name, $values, $value, $attributes);
+				$html .= self::select($name, $values, $value, $new_attributes);
 			break;
 			case 'password':
 				$html .= self::label($name, $title, NULL, $err_msg);
-				$html .= self::password($name, $value, $attributes);
+				$html .= self::password($name, $value, $new_attributes);
 			break;
 			case 'hidden':
-				$html = self::hidden($name, $value, $attributes);
+				$html = self::hidden($name, $value, $new_attributes);
 				return $html;
 			break;
 			case 'checkbox':
 				
 			break;
 			case 'textarea':
-				$html .= self::label($name, $title, NULL, $err_msg);;
-				$html .= self::textarea($name, $value, $attributes, TRUE);
+				$html .= self::label($name, $title, NULL, $err_msg);
+				$html .= self::textarea($name, $value, $new_attributes, TRUE);
 			break;
-			
+			case 'file':
+				$html .= self::label($name, $title, NULL, $err_msg);
+				$html .= self::file($name, $value, $new_attributes);
+			break;
+			case 'bland_file':
+				$html .= self::label($name, $title, NULL, $err_msg);
+				$values = is_array($value) ? $value : array();
+				$html .= self::bland_file($name, $values, $post, $attributes, $default_attributes);
+			break;
 			default:
 				$html .= self::label($name, $title, NULL, $err_msg);
-				$html .= self::input($name, $value, $attributes);
+				$html .= self::input($name, $value, $new_attributes);
 			break;
 		}
 		
@@ -134,7 +142,7 @@ class Form {
         }
 		
 		// end fieldset
-        $html .= '</p>';
+        $html .= '</div>';
         return $html;
 	}
 	
@@ -374,6 +382,93 @@ class Form {
 
 		return self::input($name, $value, $attributes);
 	}
+	
+	/**
+	 * Creates a file input
+	 *
+	 * @param string $name 
+	 * @param string $value 
+	 * @param array $attributes 
+	 * @return void
+	 * @author Andrew Perlitch
+	 */
+	public static function file($name, $value = NULL, array $attributes = NULL)
+	{
+		$attributes['type'] = 'file';
+		return self::input($name, $value, $attributes);
+	}
+	
+	public static function bland_file($prefix, array $values = NULL, array $post, array $options = NULL, array $attributes)
+	{
+		// add prefix to options
+		$options['prefix'] = $prefix;
+		
+		// merge options with defaults
+		$options = self::merge_bland_file_options($options);
+		
+		$html = '<div id="'.$prefix.'upload" ';
+		if (!empty($options)){
+			foreach ($options as $key => $value) {
+				$html .= 'data-'.$key.'="'.$value.'" ';
+			}
+		}
+		$html .= '>';
+		
+		// build rows from post data
+		// Error::log('$post:'.print_r($post,true),'form.php',__LINE__);
+		
+		
+		$html .= '</div>';
+		return $html;
+	}
+	
+	protected static function merge_bland_file_options($options)
+	{
+		// define the default options for jquery.blandUpload
+		$defaults = array(
+			// general
+	        'prefix' => "img-",                               // general prefix used for input names[]
+	        'uploaddir' => "/media/uploads/",                  // directory to (ultimately) upload images to
+	        'uploadinputname' => "files",                     // the name of the input[type="file"] when uploading
+	        'uploadtext' => "click to upload",                // text of the main "upload button"
+	        'uploadaction' => "/upload",                      // action of the upload form
+	        'maxfiles' => 0,                                  // maximum number of files to be selected
+	        'allowimagesonly' => false,                       // whether or not to allow other images
+        
+	        // title
+	        'allowtitle' => true,
+        
+	        // thumbnails
+	        'makethumbs' => true,                             // making thumbs?
+	        'thumbext' => "-thb",                             // extension for thumbnail files
+	        'thumbwidth' => 60,                               // width of thumbs
+	        'thumbratio' => 1,                                // ratio of thumb dimensions => width/height
+	        'thumbadjusttext' => "adjust thumb",              // text of the button to adjust thumbnail
+        
+	        // captions
+	        'makecaptions' => true,                           // making captions?
+	        'captionlabel' => "caption",
+        
+	        // cropping
+	        'allowcrop' => false,                              // allowing crop?
+	        'maximgwidth' => null,                            // max image width (if maximgheight not set, taken as width)
+	        'maximgheight' => null,                           // max image height (if maximgwidth not set, taken as height)
+	        'imgratio' => 0,                                  // ratio to crop image at
+	        'cropaction' => '/crop'                           // action for cropping form (same for thumbnail and images)
+		);
+		
+		// merge with options
+		return array_merge($defaults, $options);
+	}
+	
+	/**
+	 * Uses htmlspecialchars() to escape html chars.
+	 *
+	 * @param string $value              Value to encode
+	 * @param bool $double_encode        Whether or not to double-encode
+	 * @return string
+	 * @author Andrew Perlitch
+	 */
 	public static function chars($value, $double_encode = TRUE)
 	{
 		return htmlspecialchars( (string) $value, ENT_QUOTES, 'UTF-8', $double_encode);

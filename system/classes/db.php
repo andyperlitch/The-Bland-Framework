@@ -138,6 +138,9 @@ class DB extends mysqli{
 		// prepare, bind params, and execute
 		$stmt = $this->prepBindExec($query, $params, $paramReferences, $paramTypes, $bindParamsMethod);
 		
+		// return false if statement returned no results
+		if ($stmt->errno) return false;
+		
 		if ( $limit === 1 ) return $this->mfa($stmt);
 		else return $this->mfa2($stmt);
 		
@@ -723,9 +726,8 @@ class DB extends mysqli{
 				throw new DBException("Likely an error in query: ".$this->error.", or problem with bind_param: {$e->getMessage()}");
 			}
 		}
-		
 		// execute statement
-		if ($exec) $this->exec($stmt);
+		if ($exec && !$stmt->errno) $this->exec($stmt);
 		
 		// return statement
 		return $stmt;
