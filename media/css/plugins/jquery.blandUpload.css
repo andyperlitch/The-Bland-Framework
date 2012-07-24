@@ -48,6 +48,10 @@
     background:#FFF;
     cursor:move;
 }
+.blandUpload-table thead tr
+{
+    cursor:default;
+}
 .blandUpload-table tbody tr.blandUpload-sortrow-helper
 {
     display:block;
@@ -82,7 +86,7 @@
 }
 .blandUpload-table .blandUpload-disable-div p
 {
-    padding:1em 0;
+    padding:0.5em 0;
     text-shadow:0 1px 0 #000, 0 0 2px #000, 0 0 3px #000, 0 0 3px #000;
     letter-spacing:0.1em;
 }
