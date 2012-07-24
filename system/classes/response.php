@@ -74,20 +74,41 @@ class Response{
 	 */
 	public function send()
 	{
-		// check if headers already sent
-		if (! headers_sent() ) $this->sendHeaders(); 
-		
 		// check if body is an array
 		if ( is_array($this->body) ) {
 			// add json header
 			$this->headers['Content-Type'] = 'application/json; charset=utf-8';
+			
+			// check if headers already sent
+			if (! headers_sent() ) $this->sendHeaders();
+			
+			// encode for utf8
+			$this->utf_prepare($this->body);
+			
 			// echo the json-encoded array
-			echo json_encode( utf8_encode($this->body) );
+			echo json_encode( $this->body );
 			
 		} else {
+			// check if headers already sent
+			if (! headers_sent() ) $this->sendHeaders();
+			
 			// echo body of response
 			echo $this->body;
 		}
+	}
+	
+	private function utf_prepare(&$array)
+	{
+	    foreach($array AS $key => &$value)
+	    {
+	        if (is_array($value))
+	        {
+	            $this->utf_prepare($value);
+	        } else
+	        {
+	            $value = utf8_encode($value);
+	        }
+	    }
 	}
 	
 	/**
