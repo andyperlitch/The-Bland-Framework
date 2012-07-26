@@ -225,13 +225,7 @@ class DB extends mysqli{
 		$stmt = $this->prepBindExec($query, $params, $paramReferences, $paramTypes, $bindParamsMethod);
 
 		// get insert id (using procedural approach b/c issue with larger ints with OOP: http://php.net/manual/en/mysqli.insert-id.php#usernotes)
-		$return_id =  mysqli_insert_id($this);
-
-		// check if valid result
-		if ( $return_id === 0 ) throw new DBException("Error in INSERT statement. \$query=\"$query\", err:'{$this->error}'");
-
-		// return id
-		return $return_id;
+		return mysqli_insert_id($this);
 
 	}
 
@@ -709,6 +703,9 @@ class DB extends mysqli{
 	{
 		// prep statement
 		if ( !($stmt = $this->prep($query)) ) throw new DBException("failed to prepare query. \$query: \"$query\"");
+		
+		// check errno of statement
+		if ($stmt->errno) throw new DBException("Error prepping query: {$stmt->error}");
 		
 		// fill reference array
 		foreach($params as $key => $value){

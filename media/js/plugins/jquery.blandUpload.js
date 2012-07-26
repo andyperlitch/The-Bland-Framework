@@ -253,7 +253,7 @@
                     }),
                     $thumb_img = $("img.blandUpload-thumb-"+file.index, $row),
                     $thumb_inp = $("input.blandUpload-thumb-"+file.index, $row),
-                    $src_inp = $("input#"+self.options.prefix+"filename-"+file.index, $row);
+                    $src_inp = $("input."+self.options.prefix+"filename-"+file.index, $row);
                 if (file.errorMessage) {
                     // disable that row
                     self.disableRow($row.data("chosen",true), file.errorMessage, false, self);
@@ -513,6 +513,10 @@
                         // get rows
                         var $rows = $("tr.blandUpload-uploadingrow",self.$tbody);
                         
+                        // fire onuploadstart
+                        if (typeof self.options.onuploadstart === "function") 
+                            self.options.onuploadstart(files);
+                        
                         // submit form with ajaxSubmit
                         form.ajaxSubmit({
                             url:self.options.uploadaction,
@@ -528,9 +532,11 @@
                                 .text(percentTotal);
                             },
                             error:function(){
-                                // delete rows that were uploaded
-                                $rows.slideUp("normal",function(){$(this).remove();});
-                                // remove from 
+                                // disable each row
+                                $rows.each(function(index,obj){
+                                    var $row = $(this);
+                                    self.disableRow($row,"An error occurred on this upload!",false,self);
+                                });
                             },
                             complete:function(){
                                 form.remove();
@@ -678,7 +684,11 @@
         maximgwidth:null,                            // max image width (if maximgheight not set, taken as width)
         maximgheight:null,                           // max image height (if maximgwidth not set, taken as height)
         imgratio:0,                                  // ratio to crop image at
-        cropaction:'/crop'                           // action for cropping form (same for thumbnail and images)
+        cropaction:'/crop',                           // action for cropping form (same for thumbnail and images)
+        
+        // callbacks
+        onuploadstart:null,
+        onuploadcomplete:null
     };
 
 }));
