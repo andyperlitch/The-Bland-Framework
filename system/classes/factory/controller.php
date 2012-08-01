@@ -79,27 +79,28 @@ class Factory_Controller extends Factory{
 			}
 			
 			// Take off first capture
-			array_splice(&$matches,0,1);
-			
+			array_shift(&$matches);
+
 			// Check that matches count is the same as keys
 			if (count($route['keys']) < count($matches) ) {
 				$reasons .= "'{$route['patter']}': Not enough keys provided for matches, ";
 				continue;
 			}
 			
-			// eliminate any empty values
-			$matches = array_filter($matches);
-
-			// reduce keys to count of $matches
-			$keys = $route['keys'];
-			$count = count($matches);
-			array_splice(&$keys, $count );
-						
-			// Combine keys to matches
-			$combined = $count > 0 ? array_combine($keys,$matches) : array();
+			// combine arrays
+			$combined = array_combine($route['keys'],$matches);
 			
-			// Merge defaults with $combined
-			$merged = array_merge($route['defaults'], $combined);
+			// create merged array
+			$merged = array();
+			
+			// make empty values default values
+			foreach ($combined as $key => $value) {
+				if ($value == "") {
+					if (array_key_exists($key,$route['defaults'])) $merged[$key] = $route['defaults'][$key];
+				} else {
+					$merged[$key] = $value;
+				}
+			}
 			
 			// Check that controller and action are specified in resulting array
 			if ( (! array_key_exists('controller', $merged)) || (! array_key_exists('action',$merged)) ) {

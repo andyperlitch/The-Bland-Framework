@@ -327,26 +327,10 @@ class DB extends mysqli{
 		// add semicolon
 		$query .= ";";
 		
-		// prepare query
-		if ( ! ($stmt = $this->prep($query)) ) throw new DBException("Could not prepare DELETE query.");
-
-		// fill reference array
-		foreach($params as $key => $value){
-			$paramReferences[$key] = &$params[$key];  
-		}
-
-		// prepend paramTypes to array
-		array_unshift($paramReferences,$paramTypes);
-		
-		try {
-			// call bind_param
-			$bindParamsMethod->invokeArgs($stmt,$paramReferences);
-		} catch (Exception $e) {
-			throw new DBException("Likely an error in query: ".$this->error);
-		}
+		// prepare, bind, and execute
+		$stmt = $this->prepBindExec($query, $params, $paramReferences, $paramTypes, $bindParamsMethod);
 		
 		return true;
-		
 	}
 	
 	/**
