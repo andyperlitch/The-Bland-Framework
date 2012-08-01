@@ -1,7 +1,7 @@
-# The Bland Framework: A light-weight PHP Framework
+# The Bland Framework: A light-weight Web-App Framework/Boilerplate
 * * *
 
-Based on the kohana framework without as many bells and whistles, as well as less globals/statics. Feel free to send pull requests or provide any feedback.
+A flexible PHP-MVC framework with jquery, requirejs, mustache.js, and other plugins and utils for javascript on the front end.
 
 ## General Goals for the project:
 1. **Loose Coupling**
