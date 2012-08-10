@@ -63,6 +63,9 @@ class DB extends mysqli{
 		$this->config['db_pass'],
 		$this->config['db_dbname']
 		);
+		
+		// set sending encoding to utf8
+		$this->set_charset('utf8');
 	}
 	
 	/**
@@ -327,10 +330,12 @@ class DB extends mysqli{
 		// add semicolon
 		$query .= ";";
 		
-		// prepare, bind, and execute
+		// bind prep execute
 		$stmt = $this->prepBindExec($query, $params, $paramReferences, $paramTypes, $bindParamsMethod);
 		
-		return true;
+		// return errno
+		return $stmt->errno ? false : true ;
+		
 	}
 	
 	/**
@@ -683,8 +688,21 @@ class DB extends mysqli{
 	 * @return mysqli_stmt_extended                statement created by prepare
 	 * @author Andrew Perlitch
 	 */
-	protected function prepBindExec(&$query, array $params, array &$paramReferences, &$paramTypes, ReflectionMethod &$bindParamsMethod, $exec = true)
+	public function prepBindExec(&$query, array $params, array &$paramReferences = array(), &$paramTypes = "", ReflectionMethod &$bindParamsMethod = NULL, $exec = true)
 	{
+		// Check if $paramTypes was supplied
+		if ($paramTypes == "" && !empty($params)) {
+			// It was not supplied, so build it here.
+			foreach ($params as $key => $param) {
+				$paramTypes .= $this->detectParamType($param,$key);
+			}
+		}
+		
+		// Check if the bindParamsMethod was supplied.
+		if (!$bindParamsMethod) 
+			$bindParamsMethod = new ReflectionMethod('mysqli_stmt','bind_param');    // method to use to bind params
+		
+		
 		// prep statement
 		if ( !($stmt = $this->prep($query)) ) throw new DBException("failed to prepare query. \$query: \"$query\"");
 		
@@ -769,17 +787,17 @@ class mysqli_stmt_extended extends mysqli_stmt {
 			// this is a hack. The problem is that the array $this->results is full
 			// of references not actual data, therefore when doing the following:
 			// while ($row = $this->stmt->fetch_assoc()) {
-			// $results[] = $row;
-			// }
-			// $results[0], $results[1], etc, were all references and pointed to
-			// the last dataset
-			foreach ($this->results as $k => $v) {
-				$results[$k] = $v;
+				// $results[] = $row;
+				// }
+				// $results[0], $results[1], etc, were all references and pointed to
+				// the last dataset
+				foreach ($this->results as $k => $v) {
+					$results[$k] = $v;
+				}
+				return $results;
+			} else {
+				return null;
 			}
-			return $results;
-		} else {
-			return null;
 		}
-	}
 
-}
+	}

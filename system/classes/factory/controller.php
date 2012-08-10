@@ -79,7 +79,7 @@ class Factory_Controller extends Factory{
 			}
 			
 			// Take off first capture
-			$matches = array_shift($matches);
+			array_shift($matches);
 
 			// Check that matches count is the same as keys
 			if (count($route['keys']) < count($matches) ) {
