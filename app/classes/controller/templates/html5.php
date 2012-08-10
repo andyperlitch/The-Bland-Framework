@@ -55,6 +55,19 @@ class Controller_Templates_Html5 extends Controller{
 				'media' => 'screen',
 				'title' => 'main styles'
 			);
+			
+			// check for message in request params
+			if ($this->request->param('notification')) {
+				try {
+					// get message model
+					$msg = $this->fm->build("notification", array($this->request->param('notification')) );
+					// set message to template
+					$this->template['notification'] = $msg->writeOut();
+				} catch (Exception $e) {
+					// notification not recognized or problem with db
+					Error::exc( $e , __FILE__ , __LINE__ );
+				}
+			}
 		}
 		
 	}

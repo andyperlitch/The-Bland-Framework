@@ -769,17 +769,17 @@ class mysqli_stmt_extended extends mysqli_stmt {
 			// this is a hack. The problem is that the array $this->results is full
 			// of references not actual data, therefore when doing the following:
 			// while ($row = $this->stmt->fetch_assoc()) {
-				// $results[] = $row;
-				// }
-				// $results[0], $results[1], etc, were all references and pointed to
-				// the last dataset
-				foreach ($this->results as $k => $v) {
-					$results[$k] = $v;
-				}
-				return $results;
-			} else {
-				return null;
+			// $results[] = $row;
+			// }
+			// $results[0], $results[1], etc, were all references and pointed to
+			// the last dataset
+			foreach ($this->results as $k => $v) {
+				$results[$k] = $v;
 			}
+			return $results;
+		} else {
+			return null;
 		}
-
 	}
+
+}

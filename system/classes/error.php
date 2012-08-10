@@ -50,7 +50,7 @@ PROPER_NAME_OF_PROJECT SYSTEM ERROR, URGENT (3):
         }
     }
 
-	public static function logExc(Exception $e , $file_caught , $line_caught , $priority = 2 ){
+	public static function exc(Exception $e , $file_caught , $line_caught , $priority = 2 ){
 
         $message = '
 ----------------------
@@ -63,6 +63,14 @@ Trace: '.print_r($e->getTrace(),true);
         $message .= '
 ----------------------';
         error_log($message);
-        
     }	
+
+	public static function dump($variable,$file,$line=0,$priority=1)
+	{
+		ob_start();
+		var_dump($variable);
+		$variable_dumped = ob_get_contents();
+		ob_end_clean();
+		self::log('Dumped variable: '.$variable_dumped,$file,$line,$priority);
+	}
 }

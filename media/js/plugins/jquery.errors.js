@@ -20,7 +20,7 @@
 (function (factory) {
 	if (typeof define === 'function' && define.amd) {
 		// AMD. Register as an anonymous module.
-		define(['jquery'], factory);
+		define(['jquery',], factory);
 	} else {
 		// Browser globals
 		factory(jQuery, window, document);
@@ -44,7 +44,7 @@
    			
 			// remove current errors if options allow
 			if ( self.options.removeCurrent ) {
-				$("p.input-error",self.$el).removeClass("input-error");
+				$(".input-error",self.$el).removeClass("input-error");
 				$("label.err",self.$el).remove();
 			}
 
@@ -58,6 +58,16 @@
 		},
 		
 		displayError: function(name, message, self) {
+		    // check if general form error
+		    if ( name === "form-error" ) {
+		        return $.pnotify({
+		            'title':message.title,
+		            'text':message.text,
+		            'type':message.type,
+		            'hide':message.hide
+		        })
+		    }
+		    
 			// get object
 			var inp = $("input[name='"+name+"'],select[name='"+name+"'],textarea[name='"+name+"'], div#"+name+"upload",self.$el),
 			    label;

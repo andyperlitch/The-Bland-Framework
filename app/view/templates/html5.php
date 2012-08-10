@@ -76,5 +76,8 @@
 			}
 			?>
 		</div>
+		<?php if (isset($notification)): ?>
+			<?=$notification?>
+		<?php endif ?>
 	</body>
 </html>

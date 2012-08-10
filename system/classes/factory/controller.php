@@ -79,7 +79,7 @@ class Factory_Controller extends Factory{
 			}
 			
 			// Take off first capture
-			array_shift(&$matches);
+			$matches = array_shift($matches);
 
 			// Check that matches count is the same as keys
 			if (count($route['keys']) < count($matches) ) {
@@ -87,7 +87,7 @@ class Factory_Controller extends Factory{
 				continue;
 			}
 			
-			// combine arrays
+			// combine
 			$combined = array_combine($route['keys'],$matches);
 			
 			// create merged array

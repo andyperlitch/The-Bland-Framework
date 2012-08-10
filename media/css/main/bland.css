@@ -12,3 +12,7 @@ body {
 	background-color:#EFEFEF;
 	text-align:center;
 }
+.bland-notification
+{
+    display:none;
+}

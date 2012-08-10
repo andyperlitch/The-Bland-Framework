@@ -37,6 +37,10 @@ class HTML{
 	
 	public static function prep($message, $links = true, $images = true)
 	{
+		// check for empty string
+		if (trim($message) == "") return "";
+		
+		// hsc and nl2br
 		$message = nl2br(htmlspecialchars($message));
 		
 		// check for bold
@@ -57,6 +61,17 @@ class HTML{
 			},
 			$message
 		);
+		// check for span class/color
+		$span_pattern = "/--(.*?)--\((.*?)\)/";
+		$message = preg_replace_callback(
+			$span_pattern,
+			function($matches){
+				if (preg_match('/#[A-Za-z0-9]{6}/',$matches[2])) return "<span style=\"color:".$matches[2].";\">".trim($matches[1],'>) ')."</span>";
+				return "<span class=\"".$matches[2]."\">".trim($matches[1],'>) ')."</span>";
+			},
+			$message
+		);
+		
 		// check for links
 		if ($links) {
 			// link format = [link text](link_url)
@@ -77,6 +92,7 @@ class HTML{
 			);
 		}
 		return $message;
+		
 	}
 	
 	public static function timeSinceOrUntil($timestamp, $to = null, $numClauses = 2)
